@@ -60,6 +60,7 @@ public class OrderSystem : MonoBehaviour
         {
             if (_isSlot1Avalable != true)
                 yield return null;
+
         }
     }
 }
