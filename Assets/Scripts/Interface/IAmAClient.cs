@@ -2,5 +2,6 @@ using UnityEngine;
 
 public interface IAmAClient
 {
-    void Order(int slot);
+    void NewClient(Sprite clientSprite, float clientWaitingTime);
+    void Order(Slot slot);
 }
