@@ -25,13 +25,16 @@ public class ClientSystem : MonoBehaviour, IAmAClient
     private bool _isSlotAvalable = true;
     private Sprite _clientSprite;
     private float _clientWaitingTime;
+    private int _damege;
     [SerializeField] private int _maxLimitOfOrder = 3;
     private int order1;
     private int order2;
     private int order3;
     private int order4;
-    public void NewClient(Sprite clientSprite, float clientWaitingTime)
+    public void NewClient(Sprite clientSprite, float clientWaitingTime, Slot slot, int damege)
     {
+        if (slot != _slot)
+            return;
         _isSlotAvalable = false;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
         _clientSprite = clientSprite;
@@ -71,6 +74,7 @@ public class ClientSystem : MonoBehaviour, IAmAClient
         order1 = 0;
         order2 = 0;
         order3 = 0;
+        order4 = 0;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
