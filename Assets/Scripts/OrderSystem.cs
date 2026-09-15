@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class OrderSystem : MonoBehaviour
 {
+    private TypeOfMealAvailable[] _typeOfMeals;
     [Header("Client")]
     private Sprite _clientSprite;
     private float _clientWaitingTime;
@@ -60,7 +61,10 @@ public class OrderSystem : MonoBehaviour
     public void TakeDamege(int damege)
     {
         if (_currentlife >= _maxlife)
+        {
+            _currentlife = _maxlife;
             return;
+        }       
         _currentlife = damege;
         if (_currentlife <= 0)
         {
@@ -73,7 +77,7 @@ public class OrderSystem : MonoBehaviour
     }
     private IEnumerator ClientsComing()
     {
-        if(_clientsAtended >= 6)
+        if(_clientsAtended >= _clientAttendedUntilCritic)
         {
             _clientSprite = _criticClientSprite;
             _clientWaitingTime = _criticWaitingTime;
@@ -86,8 +90,9 @@ public class OrderSystem : MonoBehaviour
             _clientWaitingTime = _normalClientWaitingTime;
             _damege = _normalClientDamege;
         }
-            yield return new WaitForSeconds(_arrivalInterval);
-        int randomSlot = Random.Range(0, _slotsAvailable + 1);
+        yield return new WaitForSeconds(_arrivalInterval);
+        int randomSlot = Random.Range(0, _slotsAvailable);
+        int randomMeal = Random.Range(1, 3);
         switch (randomSlot)
         {
             case 1:
@@ -95,28 +100,28 @@ public class OrderSystem : MonoBehaviour
                 {
                     StartCoroutine(ClientsComing());
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot1,_damege);
+                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot1,_damege, _typeOfMeals[randomMeal]);
                 break;
             case 2:
                 if (_isSlot2Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot2, _damege);
+                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot2, _damege, _typeOfMeals[randomMeal]);
                 break;
             case 3:
                 if (_isSlot3Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot3, _damege);
+                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot3, _damege, _typeOfMeals[randomMeal]);
                 break;
             case 4:
                 if (_isSlot4Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot4, _damege);
+                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot4, _damege, _typeOfMeals[randomMeal]);
                 break;
         }
     }
