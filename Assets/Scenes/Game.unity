@@ -242,7 +242,7 @@ MonoBehaviour:
   _criticClientSprite: {fileID: 0}
   _criticWaitingTime: 13
   _criticDamege: 3
-  clientSystem: {fileID: 0}
+  clientSystem: {fileID: 1590092484}
   _maxlife: 3
   _arrivalInterval: 0
   _clientAttendedUntilCritic: 8
