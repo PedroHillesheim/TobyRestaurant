@@ -16,9 +16,9 @@ public class MealType : MonoBehaviour
     [SerializeField] private int _maxOfReadyMadeMeals;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void StartCooking(TypeOfMealAvailable type)
+    public void StartCooking(int type)
     {
-        StartCoroutine(CookingMeal(type));
+        StartCoroutine(CookingMeal((TypeOfMealAvailable)type));
     }
     private IEnumerator CookingMeal(TypeOfMealAvailable type)
     {

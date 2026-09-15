@@ -124,5 +124,6 @@ public class OrderSystem : MonoBehaviour
                 clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot4, _damege, _typeOfMeals[randomMeal]);
                 break;
         }
+        StartCoroutine(ClientsComing());
     }
 }

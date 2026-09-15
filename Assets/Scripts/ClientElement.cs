@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class ClientElement : MonoBehaviour
@@ -13,11 +14,15 @@ public class ClientElement : MonoBehaviour
     private int _order;
     private int _readyAppertizer;
     private int _readyDessert;
-    
+    private TMP_Text _appetizerText;
+    private TMP_Text _dessertText;
+
     public void GetValue(Sprite clientSprite, float clientWaitingTime, int damege, Slot slot, TypeOfMealAvailable typeOfMeal)
     {
+        print("Antes de verificar" + _slot);
         if(slot != _slot)
             return;
+        print("Depois de verificar" + _slot);
         _clientSprite = clientSprite;
         _clientWaitingTime = clientWaitingTime;
         _damege = damege;
@@ -29,11 +34,11 @@ public class ClientElement : MonoBehaviour
     {
         if (typeOfMeal == TypeOfMealAvailable.Appetizer)
         {
-            _readyAppertizer = madeMeals;
+            _readyAppertizer++;
         }
         else if (typeOfMeal == TypeOfMealAvailable.Dessert)
         {
-            _readyDessert = madeMeals;
+            _readyDessert++;
         }
     }
     public void VerifyIfOrderIsDone()
@@ -65,5 +70,12 @@ public class ClientElement : MonoBehaviour
     {
         _type = GameController.Instance.MealType;
         _orderSystem = GameController.Instance.OrderSystem;
+        _appetizerText = GameController.Instance.AppetizerText;
+        _dessertText = GameController.Instance.DessertText;
+    }
+    private void Update()
+    {
+        _appetizerText.text = _readyAppertizer.ToString();
+        _dessertText.text = _readyDessert.ToString();
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public enum Slot
@@ -18,7 +19,7 @@ public class ClientType
 public class ClientSystem : MonoBehaviour
 {
     [SerializeField] OrderSystem _orderSystem;
-    [SerializeField] ClientElement _client;
+    private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
     [SerializeField] private MealType _mealType;
     private Slot _slot;
@@ -30,7 +31,10 @@ public class ClientSystem : MonoBehaviour
     {
         _isSlotAvalable = false;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
-        _client.GetValue(clientSprite, clientWaitingTime, damege, slot, typeOfMeal);
+        for (int i = 0; i < _client.Length; i++)
+        {
+            _client[i].GetValue(clientSprite, clientWaitingTime, damege, slot, typeOfMeal);
+        }
     }
     public void Order(Slot slot)
     {
