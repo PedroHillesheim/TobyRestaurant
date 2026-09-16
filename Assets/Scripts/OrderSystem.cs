@@ -22,7 +22,7 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private float _arrivalInterval = 5f;
     [SerializeField] private int _clientAttendedUntilCritic = 8;
     private int _clientsAtended;
-    private int _slotsAvailable;
+    [SerializeField] private int _slotsAvailable;
     private int _currentlife;
     private bool _isSlot1Avalable = true;
     private bool _isSlot2Avalable = true;
@@ -31,13 +31,8 @@ public class OrderSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        clientSystem = GameController.Instance.ClientSystem;
         StartCoroutine(ClientsComing());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
     {
@@ -77,6 +72,10 @@ public class OrderSystem : MonoBehaviour
     }
     private IEnumerator ClientsComing()
     {
+        if (_isSlot1Avalable == false && _isSlot2Avalable == false && _isSlot3Avalable ==false && _isSlot4Avalable == false)
+        {
+            StartCoroutine(ClientsComing());
+        }
         if(_clientsAtended >= _clientAttendedUntilCritic)
         {
             _clientSprite = _criticClientSprite;
@@ -91,37 +90,43 @@ public class OrderSystem : MonoBehaviour
             _damege = _normalClientDamege;
         }
         yield return new WaitForSeconds(_arrivalInterval);
-        int randomSlot = Random.Range(0, _slotsAvailable);
-        int randomMeal = Random.Range(1, 3);
+        int randomSlot = Random.Range(1, _slotsAvailable + 1);
+        int randomMeal = Random.Range(1, System.Enum.GetValues(typeof(TypeOfMealAvailable)).Length + 1);
+        print(randomSlot);
         switch (randomSlot)
         {
             case 1:
                 if (_isSlot1Avalable != true)
                 {
+                    StopCoroutine(ClientsComing());
                     StartCoroutine(ClientsComing());
+                    yield return null;
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot1,_damege, _typeOfMeals[randomMeal]);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1,_damege, (TypeOfMealAvailable)randomMeal);
                 break;
             case 2:
                 if (_isSlot2Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
+                    yield return null;
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot2, _damege, _typeOfMeals[randomMeal]);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
             case 3:
                 if (_isSlot3Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
+                    yield return null;
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot3, _damege, _typeOfMeals[randomMeal]);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
             case 4:
                 if (_isSlot4Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
+                    yield return null;
                 }
-                clientSystem.NewClient(_clientSprite, _clientWaitingTime, Slot.Slot4, _damege, _typeOfMeals[randomMeal]);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
         }
         StartCoroutine(ClientsComing());

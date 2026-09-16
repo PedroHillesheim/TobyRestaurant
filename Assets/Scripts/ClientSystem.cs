@@ -27,13 +27,13 @@ public class ClientSystem : MonoBehaviour
     private Sprite _clientSprite;
     private int _mealsReady;
     private int order1;
-    public void NewClient(Sprite clientSprite, float clientWaitingTime, Slot slot, int damege, TypeOfMealAvailable typeOfMeal)
+    public void NewClient(/*Sprite clientSprite,*/ float clientWaitingTime, Slot slot, int damege, TypeOfMealAvailable typeOfMeal)
     {
         _isSlotAvalable = false;
-        _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
+        _orderSystem.GetConfirmationOfAvailableSlot(slot, _isSlotAvalable);
         for (int i = 0; i < _client.Length; i++)
         {
-            _client[i].GetValue(clientSprite, clientWaitingTime, damege, slot, typeOfMeal);
+            _client[i].GetValue(/*clientSprite,*/ clientWaitingTime, damege, slot, typeOfMeal);
         }
     }
     public void Order(Slot slot)
@@ -56,12 +56,12 @@ public class ClientSystem : MonoBehaviour
         _isSlotAvalable = true;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
         Destroy(_clientSprite);
-        order1 = 0;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         _clientSprite = null;
+        _client = GameController.Instance.ClientsElements;
     }
     public void IsOrderCorrect()
     {

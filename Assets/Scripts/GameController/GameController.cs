@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
     public static GameController Instance { get; private set; }
     public OrderSystem OrderSystem { get => orderSystem;}
     public ClientSystem ClientSystem { get => clientSystem;}
-    public MealType MealType { get => mealType;}
+    public MealType MealTypo { get => mealType;}
     public ClientElement[] ClientsElements { get => clientsElements;}
     public TMP_Text AppetizerText { get => appetizerText;}
     public TMP_Text DessertText { get => dessertText;}

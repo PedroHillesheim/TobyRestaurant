@@ -244,8 +244,9 @@ MonoBehaviour:
   _criticDamege: 3
   clientSystem: {fileID: 1590092484}
   _maxlife: 3
-  _arrivalInterval: 0
+  _arrivalInterval: 7
   _clientAttendedUntilCritic: 8
+  _slotsAvailable: 4
 --- !u!1 &289155041
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,7 +785,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 527017411}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 527017413}
+        m_TargetAssemblyTypeName: ClientElement, Assembly-CSharp
+        m_MethodName: VerifyIfOrderIsDone
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &548395285
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,7 +1010,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 567081465}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 567081467}
+        m_TargetAssemblyTypeName: ClientElement, Assembly-CSharp
+        m_MethodName: VerifyIfOrderIsDone
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,7 +1674,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1417780346}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1417780348}
+        m_TargetAssemblyTypeName: ClientElement, Assembly-CSharp
+        m_MethodName: VerifyIfOrderIsDone
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1590092482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1927,7 +1964,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2062644838}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2062644840}
+        m_TargetAssemblyTypeName: ClientElement, Assembly-CSharp
+        m_MethodName: VerifyIfOrderIsDone
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
