@@ -9,24 +9,35 @@ public class GameController : MonoBehaviour
     public ClientSystem ClientSystem { get => clientSystem;}
     public MealType MealTypo { get => mealType;}
     public ClientElement[] ClientsElements { get => clientsElements;}
+    public GameObject LosePainel { get => _losePainel; }
     public TMP_Text AppetizerText { get => appetizerText;}
     public TMP_Text DessertText { get => dessertText;}
+    public TMP_Text AlertText { get => _alertText; }
+    public TMP_Text LifeText { get => _lifeText;}
     public Button AppetizerButton { get => _appetizerButton;}
     public Button DessertButton { get => _dessertButton;}
-    public TMP_Text AlertText { get => _alertText;}
+    public Image[] OrderDisplay { get => _orderDisplay;}
+    public Sprite[] MealSprite { get => _mealSprite;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
     [SerializeField] private ClientSystem clientSystem;
     [SerializeField] private MealType mealType;
     [SerializeField] private ClientElement[] clientsElements;
+    [Header("GameObject")]
+    [SerializeField] private GameObject _losePainel;
     [Header("Text")]
     [SerializeField] private TMP_Text appetizerText;
     [SerializeField] private TMP_Text dessertText;
     [SerializeField] private TMP_Text _alertText;
+    [SerializeField] private TMP_Text _lifeText;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
+    [Header("Image")]
+    [SerializeField] private Image[] _orderDisplay;
+    [Header("Sprite")]
+    [SerializeField] private Sprite[] _mealSprite;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

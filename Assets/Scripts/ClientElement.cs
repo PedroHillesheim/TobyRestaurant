@@ -15,17 +15,29 @@ public class ClientElement : MonoBehaviour
     private bool _isSlotAvalable = true;
     private int _damege;
     private int _order;
+    private int _slotInt;
     private int _readyAppertizer;
     private int _readyDessert;
     private Image _clientUI;
+    private Image[] _orderDisplay;
+    private Sprite[] _mealSprite;
 
     public void GetValue(/*Sprite clientSprite,*/ float clientWaitingTime, int damege, Slot slot, TypeOfMealAvailable typeOfMeal)
     {
         if(slot != _slot)
             return;
+        _orderDisplay[_slotInt].enabled = true;
         _typeOfMeals = typeOfMeal;
         _isSlotAvalable = false;
         _clientUI.color = Color.gold;
+        if (typeOfMeal == TypeOfMealAvailable.Appetizer)
+        {
+            _orderDisplay[_slotInt].sprite = _mealSprite[0];
+        }
+        else if (typeOfMeal == TypeOfMealAvailable.Dessert)
+        {
+            _orderDisplay[_slotInt].sprite = _mealSprite[1];
+        }
         print(typeOfMeal + " " + _slot);
         //_clientSprite = clientSprite;
         _clientWaitingTime = clientWaitingTime;
@@ -57,6 +69,7 @@ public class ClientElement : MonoBehaviour
     private void OrderDone()
     {
         StopAllCoroutines();
+        _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.brown;
         _isSlotAvalable = true;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
@@ -76,5 +89,23 @@ public class ClientElement : MonoBehaviour
         _type = GameController.Instance.MealTypo;
         _orderSystem = GameController.Instance.OrderSystem;
         _clientSystem = GameController.Instance.ClientSystem;
+        _orderDisplay = GameController.Instance.OrderDisplay;
+        _mealSprite = GameController.Instance.MealSprite;
+        if (_slot == Slot.Slot1)
+        {
+            _slotInt = 0;
+        }
+        else if (_slot == Slot.Slot2)
+        {
+            _slotInt = 1;
+        }
+        else if (_slot == Slot.Slot3)
+        {
+            _slotInt = 2;
+        }
+        else if ( _slot == Slot.Slot4)
+        {
+            _slotInt = 3;
+        }
     }
 }

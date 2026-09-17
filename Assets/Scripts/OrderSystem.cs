@@ -1,5 +1,7 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OrderSystem : MonoBehaviour
 {
@@ -28,11 +30,18 @@ public class OrderSystem : MonoBehaviour
     private bool _isSlot2Avalable = true;
     private bool _isSlot3Avalable = true;
     private bool _isSlot4Avalable = true;
+    private TMP_Text _lifeText;
+    private GameObject _losePainel;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         clientSystem = GameController.Instance.ClientSystem;
         StartCoroutine(ClientsComing());
+        _lifeText = GameController.Instance.LifeText;
+        _losePainel = GameController.Instance.LosePainel;
+        _currentlife = _maxlife;
+        _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
+        _losePainel.SetActive(false);
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
     {
@@ -58,13 +67,20 @@ public class OrderSystem : MonoBehaviour
         if (_currentlife >= _maxlife)
         {
             _currentlife = _maxlife;
-            return;
         }       
-        _currentlife = damege;
+        _currentlife -= damege;
+        _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
         if (_currentlife <= 0)
         {
-            throw new System.NotImplementedException("Death is not programmed");
+            _losePainel.SetActive(true);
+            StopAllCoroutines();
+            Time.timeScale = 0;
         }
+    }
+    public void ResetScene()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ClientAtended()
     {
@@ -75,6 +91,7 @@ public class OrderSystem : MonoBehaviour
         if (_isSlot1Avalable == false && _isSlot2Avalable == false && _isSlot3Avalable ==false && _isSlot4Avalable == false)
         {
             StartCoroutine(ClientsComing());
+            yield break;
         }
         if(_clientsAtended >= _clientAttendedUntilCritic)
         {
@@ -98,9 +115,8 @@ public class OrderSystem : MonoBehaviour
             case 1:
                 if (_isSlot1Avalable != true)
                 {
-                    StopCoroutine(ClientsComing());
                     StartCoroutine(ClientsComing());
-                    yield return null;
+                    yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1,_damege, (TypeOfMealAvailable)randomMeal);
                 break;
@@ -108,7 +124,7 @@ public class OrderSystem : MonoBehaviour
                 if (_isSlot2Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
-                    yield return null;
+                    yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
@@ -116,7 +132,7 @@ public class OrderSystem : MonoBehaviour
                 if (_isSlot3Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
-                    yield return null;
+                    yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
@@ -124,7 +140,7 @@ public class OrderSystem : MonoBehaviour
                 if (_isSlot4Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
-                    yield return null;
+                    yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege, (TypeOfMealAvailable)randomMeal);
                 break;
