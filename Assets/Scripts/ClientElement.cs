@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +20,8 @@ public class ClientElement : MonoBehaviour
     private Image _clientUI;
     private Image[] _orderDisplay;
     private Sprite[] _mealSprite;
+    private Renderer _objectRenderer;
+    private Color _originalColor;
 
     public void GetValue(/*Sprite clientSprite,*/ float clientWaitingTime, int damege, Slot slot, TypeOfMealAvailable typeOfMeal)
     {
@@ -38,7 +39,6 @@ public class ClientElement : MonoBehaviour
         {
             _orderDisplay[_slotInt].sprite = _mealSprite[1];
         }
-        print(typeOfMeal + " " + _slot);
         //_clientSprite = clientSprite;
         _clientWaitingTime = clientWaitingTime;
         _damege = damege;
@@ -91,6 +91,7 @@ public class ClientElement : MonoBehaviour
         _clientSystem = GameController.Instance.ClientSystem;
         _orderDisplay = GameController.Instance.OrderDisplay;
         _mealSprite = GameController.Instance.MealSprite;
+        _objectRenderer = GetComponent<Renderer>();
         if (_slot == Slot.Slot1)
         {
             _slotInt = 0;

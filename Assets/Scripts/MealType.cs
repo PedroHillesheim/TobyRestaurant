@@ -52,7 +52,9 @@ public class MealType : MonoBehaviour
                 yield break;
             }
             _isCookingAppetizer = true;
+            _appetizerButton.interactable = false;
             yield return new WaitForSeconds(_timeOfCooking);
+            _appetizerButton.interactable = true;
             _isCookingAppetizer = false;
             _appetizerReady++;
             if (_appetizerReady >= _maxOfReadyMadeMeals)
@@ -68,7 +70,9 @@ public class MealType : MonoBehaviour
                 yield break;
             }
             _isCookingDessert = true;
+            _dessertButton.interactable = false;
             yield return new WaitForSeconds(_timeOfCooking);
+            _dessertButton.interactable = true;
             _isCookingDessert = false;
             _dessertReady++;
             if (_dessertReady >= _maxOfReadyMadeMeals)
