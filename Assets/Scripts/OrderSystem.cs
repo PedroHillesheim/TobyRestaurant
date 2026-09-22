@@ -32,6 +32,7 @@ public class OrderSystem : MonoBehaviour
     private bool _isSlot4Avalable = true;
     private TMP_Text _lifeText;
     private GameObject _losePainel;
+    private TMP_Text _alertText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -40,6 +41,7 @@ public class OrderSystem : MonoBehaviour
         _lifeText = GameController.Instance.LifeText;
         _losePainel = GameController.Instance.LosePainel;
         _currentlife = _maxlife;
+        _alertText = GameController.Instance.AlertText;
         _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
         _losePainel.SetActive(false);
     }
@@ -85,6 +87,7 @@ public class OrderSystem : MonoBehaviour
     public void ClientAtended()
     {
         _clientsAtended++;
+        _alertText.text = "";
     }
     private IEnumerator ClientsComing()
     {
@@ -95,6 +98,8 @@ public class OrderSystem : MonoBehaviour
         }
         if(_clientsAtended >= _clientAttendedUntilCritic)
         {
+            print("Critic Coming");
+            _alertText.text = "The critic arrived";
             _clientSprite = _criticClientSprite;
             _clientWaitingTime = _criticWaitingTime;
             _damege = _criticDamege;
@@ -109,7 +114,6 @@ public class OrderSystem : MonoBehaviour
         yield return new WaitForSeconds(_arrivalInterval);
         int randomSlot = Random.Range(1, _slotsAvailable + 1);
         int randomMeal = Random.Range(1, System.Enum.GetValues(typeof(TypeOfMealAvailable)).Length + 1);
-        print(randomSlot);
         switch (randomSlot)
         {
             case 1:

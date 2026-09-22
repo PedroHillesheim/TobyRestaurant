@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour
     public Button DessertButton { get => _dessertButton;}
     public Image[] OrderDisplay { get => _orderDisplay;}
     public Sprite[] MealSprite { get => _mealSprite;}
+    public Image[] TimeBar { get => _timeBarSlots;}
+    public Image[] TimeBarMeals { get => _timeBarMeals;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -36,6 +38,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Button _dessertButton;
     [Header("Image")]
     [SerializeField] private Image[] _orderDisplay;
+    [SerializeField] private Image[] _timeBarSlots;
+    [SerializeField] private Image[] _timeBarMeals;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

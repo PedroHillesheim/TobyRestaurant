@@ -25,6 +25,9 @@ public class MealType : MonoBehaviour
     private bool _isCookingDessert;
     private Button _appetizerButton;
     private Button _dessertButton;
+    private float _presentTimeAppetizer;
+    private float _presentTimeDessert;
+    private Image[] _timeBarMeals;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -35,6 +38,7 @@ public class MealType : MonoBehaviour
         _appetizerText = GameController.Instance.AppetizerText;
         _dessertText = GameController.Instance.DessertText;
         _alertText = GameController.Instance.AlertText;
+        _timeBarMeals = GameController.Instance.TimeBarMeals;
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
     }
@@ -53,12 +57,27 @@ public class MealType : MonoBehaviour
             }
             _isCookingAppetizer = true;
             _appetizerButton.interactable = false;
-            yield return new WaitForSeconds(_timeOfCooking);
+
+            _timeBarMeals[0].fillAmount = 1;
+            _presentTimeAppetizer = _timeOfCooking;
+            while (_presentTimeAppetizer > 0)
+            {
+                _presentTimeAppetizer -= Time.deltaTime;
+
+                _timeBarMeals[0].fillAmount = _presentTimeAppetizer / _timeOfCooking;
+
+                yield return null;
+            }
+            _presentTimeAppetizer = 0;
+            _timeBarMeals[0].fillAmount = 0;
+
             _appetizerButton.interactable = true;
             _isCookingAppetizer = false;
             _appetizerReady++;
+            _appetizerButton.interactable = true;
             if (_appetizerReady >= _maxOfReadyMadeMeals)
             {
+                _presentTimeAppetizer = 0;
                 _appetizerButton.interactable = false;
             }
         }
@@ -71,12 +90,26 @@ public class MealType : MonoBehaviour
             }
             _isCookingDessert = true;
             _dessertButton.interactable = false;
-            yield return new WaitForSeconds(_timeOfCooking);
+
+            _timeBarMeals[1].fillAmount = 1;
+            _presentTimeDessert = _timeOfCooking;
+            while (_presentTimeDessert > 0)
+            {
+                _presentTimeDessert -= Time.deltaTime;
+
+                _timeBarMeals[1].fillAmount = _presentTimeDessert / _timeOfCooking;
+
+                yield return null;
+            }
+            _presentTimeDessert = 0;
+            _timeBarMeals[1].fillAmount = 0;
+
             _dessertButton.interactable = true;
             _isCookingDessert = false;
             _dessertReady++;
             if (_dessertReady >= _maxOfReadyMadeMeals)
             {
+                _presentTimeDessert = 0;
                 _dessertButton.interactable = false;
             }
         }
@@ -92,12 +125,26 @@ public class MealType : MonoBehaviour
         if (typeOfMeal == TypeOfMealAvailable.Appetizer)
         {
             _appetizerReady--;
-            _appetizerButton.interactable = true;
+            if(_presentTimeAppetizer > 0)
+            {
+                _appetizerButton.interactable = false;
+            }
+            else
+            {
+                _appetizerButton.interactable = true;
+            }
         }
         else if (typeOfMeal == TypeOfMealAvailable.Dessert)
         {
             _dessertReady--;
-            _dessertButton.interactable = true;
+            if (_presentTimeDessert > 0)
+            {
+                _dessertButton.interactable = false;
+            }
+            else
+            {
+                _dessertButton.interactable = true;
+            }
         }
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();

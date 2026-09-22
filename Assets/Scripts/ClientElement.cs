@@ -20,9 +20,8 @@ public class ClientElement : MonoBehaviour
     private Image _clientUI;
     private Image[] _orderDisplay;
     private Sprite[] _mealSprite;
-    private Renderer _objectRenderer;
-    private Color _originalColor;
-
+    private Image[] _timeBar;
+    private float _presentTime;
     public void GetValue(/*Sprite clientSprite,*/ float clientWaitingTime, int damege, Slot slot, TypeOfMealAvailable typeOfMeal)
     {
         if(slot != _slot)
@@ -41,6 +40,7 @@ public class ClientElement : MonoBehaviour
         }
         //_clientSprite = clientSprite;
         _clientWaitingTime = clientWaitingTime;
+        _presentTime = _clientWaitingTime;
         _damege = damege;
         _typeOfMeals = typeOfMeal;
         _order = 1;
@@ -70,16 +70,33 @@ public class ClientElement : MonoBehaviour
     {
         StopAllCoroutines();
         _orderDisplay[_slotInt].enabled = false;
-        _clientUI.color = Color.brown;
+        _clientUI.color = Color.white;
         _isSlotAvalable = true;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
+        _orderSystem.ClientAtended();
         _order = 0;
         _clientWaitingTime = 0;
+        _timeBar[_slotInt].fillAmount = 1f;
+        _presentTime = _clientWaitingTime;
         _damege = 0;
     }
     private IEnumerator ClientWaitingTime()
     {
-        yield return new WaitForSeconds(_clientWaitingTime);
+        _presentTime = _clientWaitingTime;
+
+        while (_presentTime > 0)
+        {
+            _presentTime -= Time.deltaTime;
+
+            _timeBar[_slotInt].fillAmount =
+                _presentTime / _clientWaitingTime;
+
+            yield return null;
+        }
+
+        _presentTime = 0;
+        _timeBar[_slotInt].fillAmount = 0;
+
         _orderSystem.TakeDamege(_damege);
         OrderDone();
     }
@@ -91,7 +108,7 @@ public class ClientElement : MonoBehaviour
         _clientSystem = GameController.Instance.ClientSystem;
         _orderDisplay = GameController.Instance.OrderDisplay;
         _mealSprite = GameController.Instance.MealSprite;
-        _objectRenderer = GetComponent<Renderer>();
+        _timeBar = GameController.Instance.TimeBar;
         if (_slot == Slot.Slot1)
         {
             _slotInt = 0;
@@ -108,5 +125,6 @@ public class ClientElement : MonoBehaviour
         {
             _slotInt = 3;
         }
+        _timeBar[_slotInt].fillAmount = 1f;
     }
 }
