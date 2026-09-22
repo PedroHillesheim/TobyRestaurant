@@ -23,7 +23,7 @@ public class ClientSystem : MonoBehaviour
     [SerializeField] private MealType _mealType;
     private Slot _slot;
     private bool _isSlotAvalable = true;
-    private Sprite _clientSprite;
+    //private Sprite _clientSprite;
     public void NewClient(/*Sprite clientSprite,*/ float clientWaitingTime, Slot slot, int damege, TypeOfMealAvailable typeOfMeal)
     {
         _isSlotAvalable = false;
@@ -36,7 +36,7 @@ public class ClientSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        _clientSprite = null;
+        //_clientSprite = null;
         _client = GameController.Instance.ClientsElements;
     }
 }

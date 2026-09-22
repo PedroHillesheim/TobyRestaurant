@@ -73,7 +73,7 @@ public class ClientElement : MonoBehaviour
         _clientUI.color = Color.white;
         _isSlotAvalable = true;
         _orderSystem.GetConfirmationOfAvailableSlot(_slot, _isSlotAvalable);
-        _orderSystem.ClientAtended();
+        _orderSystem.ClientAtended(_slot);
         _order = 0;
         _clientWaitingTime = 0;
         _timeBar[_slotInt].fillAmount = 1f;

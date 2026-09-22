@@ -458,7 +458,7 @@ MonoBehaviour:
   _criticDamege: 3
   clientSystem: {fileID: 1590092484}
   _maxlife: 3
-  _arrivalInterval: 3
+  _arrivalInterval: 1.5
   _clientAttendedUntilCritic: 8
   _slotsAvailable: 4
 --- !u!1 &289155041
@@ -2773,8 +2773,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MealType
   _clientSystem: {fileID: 1590092484}
-  _timeOfCooking: 2.5
-  _maxOfReadyMadeMeals: 2
+  _timeOfCooking: 2
+  _maxOfReadyMadeMeals: 3
 --- !u!1 &1755039749
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,7 +2857,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1755039752}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 279853001}
+        m_TargetAssemblyTypeName: OrderSystem, Assembly-CSharp
+        m_MethodName: ResetScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1755039752
 MonoBehaviour:
   m_ObjectHideFlags: 0

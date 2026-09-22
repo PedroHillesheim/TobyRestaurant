@@ -14,7 +14,6 @@ public class MealType : MonoBehaviour
     private TypeOfMealAvailable typeOfMealAvailable;
     [SerializeField] private float _timeOfCooking;
     private ClientElement[] _clients;
-    private int _readyMadeMeals = 0;
     [SerializeField] private int _maxOfReadyMadeMeals;
     private int _appetizerReady;
     private int _dessertReady;
