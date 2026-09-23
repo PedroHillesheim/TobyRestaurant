@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     public Sprite[] MealSprite { get => _mealSprite;}
     public Image[] TimeBar { get => _timeBarSlots;}
     public Image[] TimeBarMeals { get => _timeBarMeals;}
+    public AudioSource Bell { get => _bell;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -42,6 +43,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image[] _timeBarMeals;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
+    [Header("Audio")]
+    [SerializeField] private AudioSource _bell;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

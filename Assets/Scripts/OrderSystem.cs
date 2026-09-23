@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class OrderSystem : MonoBehaviour
 {
-    private List<int> numerosDisponiveis = new List<int>();
+    private List<int> _avalableSlot = new List<int>();
     private TypeOfMealAvailable[] _typeOfMeals;
     [Header("Client")]
     private Sprite _clientSprite;
@@ -48,7 +48,7 @@ public class OrderSystem : MonoBehaviour
         _losePainel.SetActive(false);
         for (int i = 1; i <= 4; i++)
         {
-            numerosDisponiveis.Add(i);
+            _avalableSlot.Add(i);
         }
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
@@ -93,22 +93,21 @@ public class OrderSystem : MonoBehaviour
     public void ClientAtended(Slot slot)
     {
         _clientsAtended++;
-        _alertText.text = "";
         if (slot == Slot.Slot1)
         {
-            numerosDisponiveis.Add(1);
+            _avalableSlot.Add(1);
         }
         else if (slot == Slot.Slot2)
         {
-            numerosDisponiveis.Add(2);
+            _avalableSlot.Add(2);
         }
         else if (slot == Slot.Slot3)
         {
-            numerosDisponiveis.Add(3);
+            _avalableSlot.Add(3);
         }
         else if (slot == Slot.Slot4)
         {
-            numerosDisponiveis.Add(4);
+            _avalableSlot.Add(4);
         }
     }
     private IEnumerator ClientsComing()
@@ -135,11 +134,12 @@ public class OrderSystem : MonoBehaviour
             _damege = _normalClientDamege;
         }
         yield return new WaitForSeconds(_arrivalInterval);
-        int randomSlot = Random.Range(1, _slotsAvailable + 1);
-        int randomMeal = Random.Range(0, numerosDisponiveis.Count);
+        int randomSlot = Random.Range(1, _avalableSlot.Count);
+        int randomMeal = Random.Range(1, 3);
         if (_damege >= 3)
         {
             _alertText.text = "The critic arrived";
+            StartCoroutine(Disapear());
         }
         switch (randomSlot)
         {
@@ -150,7 +150,7 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1, _damege, (TypeOfMealAvailable)randomMeal);
-                numerosDisponiveis.Remove(1);
+                _avalableSlot.Remove(1);
                 break;
             case 2:
                 if (_isSlot2Avalable != true)
@@ -159,7 +159,7 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege, (TypeOfMealAvailable)randomMeal);
-                numerosDisponiveis.Remove(2);
+                _avalableSlot.Remove(2);
                 break;
             case 3:
                 if (_isSlot3Avalable != true)
@@ -168,7 +168,7 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege, (TypeOfMealAvailable)randomMeal);
-                numerosDisponiveis.Remove(3);
+                _avalableSlot.Remove(3);
                 break;
             case 4:
                 if (_isSlot4Avalable != true)
@@ -177,9 +177,14 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege, (TypeOfMealAvailable)randomMeal);
-                numerosDisponiveis.Remove(4);
+                _avalableSlot.Remove(4);
                 break;
         }
         StartCoroutine(ClientsComing());
+    }
+    private IEnumerator Disapear()
+    {
+        yield return new WaitForSeconds(2);
+        _alertText.text = string.Empty;
     }
 }

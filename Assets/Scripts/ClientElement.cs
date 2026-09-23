@@ -22,10 +22,12 @@ public class ClientElement : MonoBehaviour
     private Sprite[] _mealSprite;
     private Image[] _timeBar;
     private float _presentTime;
+    private AudioSource _bellRing;
     public void GetValue(/*Sprite clientSprite,*/ float clientWaitingTime, int damege, Slot slot, TypeOfMealAvailable typeOfMeal)
     {
         if(slot != _slot)
             return;
+        _bellRing.Play();
         _orderDisplay[_slotInt].enabled = true;
         _typeOfMeals = typeOfMeal;
         _isSlotAvalable = false;
@@ -108,6 +110,7 @@ public class ClientElement : MonoBehaviour
         _clientSystem = GameController.Instance.ClientSystem;
         _orderDisplay = GameController.Instance.OrderDisplay;
         _mealSprite = GameController.Instance.MealSprite;
+        _bellRing = GameController.Instance.Bell;
         _timeBar = GameController.Instance.TimeBar;
         if (_slot == Slot.Slot1)
         {
