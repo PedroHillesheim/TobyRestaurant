@@ -12,14 +12,18 @@ public class OrderSystem : MonoBehaviour
     private Sprite _clientSprite;
     private float _clientWaitingTime;
     private int _damege;
+    private int _quantityOfOrder;
     [Header("Normal Client")]
     [SerializeField] private Sprite _normalClientSprite;
-    [SerializeField] private float _normalClientWaitingTime;
+    [SerializeField] private float _minimalNormalClientWaitingTime;
+    [SerializeField] private float _maxNormalClientWaitingTime;
     [SerializeField] private int _normalClientDamege;
+    [SerializeField] private int _normalClientQuantityOfOrder;
     [Header("Food critic")]
     [SerializeField] private Sprite _criticClientSprite;
     [SerializeField] private float _criticWaitingTime;
     [SerializeField] private int _criticDamege;
+    [SerializeField] private int _criticQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
     [SerializeField] private int _maxlife = 3;
@@ -35,6 +39,9 @@ public class OrderSystem : MonoBehaviour
     private TMP_Text _lifeText;
     private GameObject _losePainel;
     private TMP_Text _alertText;
+    private TMP_Text _orderDoneText;
+    private TMP_Text _totalClientAtendedText;
+    private int _clientsAtendedTotal;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,12 +51,20 @@ public class OrderSystem : MonoBehaviour
         _losePainel = GameController.Instance.LosePainel;
         _currentlife = _maxlife;
         _alertText = GameController.Instance.AlertText;
+        _orderDoneText = GameController.Instance.OrderDonesText;
+        _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
         _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
         _losePainel.SetActive(false);
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
         }
+    }
+    public void GetClientAtended()
+    {
+        _clientsAtendedTotal++;
+        _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
+        _orderDoneText.text = _clientsAtendedTotal.ToString();
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
     {
@@ -112,7 +127,8 @@ public class OrderSystem : MonoBehaviour
     }
     private IEnumerator ClientsComing()
     {
-        if (_isSlot1Avalable == false && _isSlot2Avalable == false && _isSlot3Avalable ==false && _isSlot4Avalable == false)
+        if (_isSlot1Avalable == false && _isSlot2Avalable == false &&
+        _isSlot3Avalable ==false && _isSlot4Avalable == false)
         {
             StartCoroutine(ClientsComing());
             yield break;
@@ -123,24 +139,19 @@ public class OrderSystem : MonoBehaviour
             _clientSprite = _criticClientSprite;
             _clientWaitingTime = _criticWaitingTime;
             _damege = _criticDamege;
-            int _randomClientAtended = Random.Range(6, 15);
-            _clientAttendedUntilCritic = _randomClientAtended;
-            _clientsAtended = 0;
+            _quantityOfOrder = _criticQuantityOfOrder;
         }
         else
         {
             _clientSprite = _normalClientSprite;
-            _clientWaitingTime = _normalClientWaitingTime;
+            float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, 6);
+            _clientWaitingTime = _minimalNormalClientWaitingTime;
             _damege = _normalClientDamege;
+            _quantityOfOrder = _normalClientQuantityOfOrder;
         }
         yield return new WaitForSeconds(_arrivalInterval);
         int randomSlot = Random.Range(1, _avalableSlot.Count);
         int randomMeal = Random.Range(1, 3);
-        if (_damege >= 3)
-        {
-            _alertText.text = "The critic arrived";
-            StartCoroutine(Disapear());
-        }
         switch (randomSlot)
         {
             case 1:
@@ -149,8 +160,17 @@ public class OrderSystem : MonoBehaviour
                     StartCoroutine(ClientsComing());
                     yield break;
                 }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1, _damege, (TypeOfMealAvailable)randomMeal);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1, _damege,
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
                 _avalableSlot.Remove(1);
+                if (_damege >= 3)
+                {
+                    _alertText.text = "The critic arrived";
+                    StartCoroutine(Disapear());
+                    int _randomClientAtended = Random.Range(6, 15);
+                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientsAtended = 0;
+                }
                 break;
             case 2:
                 if (_isSlot2Avalable != true)
@@ -158,8 +178,17 @@ public class OrderSystem : MonoBehaviour
                     StartCoroutine(ClientsComing());
                     yield break;
                 }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege, (TypeOfMealAvailable)randomMeal);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege,
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
                 _avalableSlot.Remove(2);
+                if (_damege >= 3)
+                {
+                    _alertText.text = "The critic arrived";
+                    StartCoroutine(Disapear());
+                    int _randomClientAtended = Random.Range(6, 15);
+                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientsAtended = 0;
+                }
                 break;
             case 3:
                 if (_isSlot3Avalable != true)
@@ -167,8 +196,17 @@ public class OrderSystem : MonoBehaviour
                     StartCoroutine(ClientsComing());
                     yield break;
                 }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege, (TypeOfMealAvailable)randomMeal);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege,
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
                 _avalableSlot.Remove(3);
+                if (_damege >= 3)
+                {
+                    _alertText.text = "The critic arrived";
+                    StartCoroutine(Disapear());
+                    int _randomClientAtended = Random.Range(6, 15);
+                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientsAtended = 0;
+                }
                 break;
             case 4:
                 if (_isSlot4Avalable != true)
@@ -176,8 +214,17 @@ public class OrderSystem : MonoBehaviour
                     StartCoroutine(ClientsComing());
                     yield break;
                 }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege, (TypeOfMealAvailable)randomMeal);
+                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege,
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
                 _avalableSlot.Remove(4);
+                if (_damege >= 3)
+                {
+                    _alertText.text = "The critic arrived";
+                    StartCoroutine(Disapear());
+                    int _randomClientAtended = Random.Range(6, 15);
+                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientsAtended = 0;
+                }
                 break;
         }
         StartCoroutine(ClientsComing());
