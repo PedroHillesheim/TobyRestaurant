@@ -93,7 +93,7 @@ public class ClientElement : MonoBehaviour
         _orderSystem.ClientAtended(_slot);
         _quantityOfOrder = 0;
         _clientWaitingTime = 0;
-        _timeBar[_slotInt].fillAmount = 1f;
+        _timeBar[_slotInt].fillAmount = 0f;
         _presentTime = _clientWaitingTime;
         _damege = 0;
     }
@@ -121,7 +121,7 @@ public class ClientElement : MonoBehaviour
     private IEnumerator NextOrder()
     {
         _quantityOfOrder--;
-        _timeBar[_slotInt].fillAmount = 1;
+        _timeBar[_slotInt].fillAmount = 0f;
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
         yield return new WaitForSeconds(2.3f);
@@ -166,6 +166,6 @@ public class ClientElement : MonoBehaviour
         {
             _slotInt = 3;
         }
-        _timeBar[_slotInt].fillAmount = 1f;
+        _timeBar[_slotInt].fillAmount = 0f;
     }
 }
