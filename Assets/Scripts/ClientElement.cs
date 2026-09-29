@@ -99,11 +99,12 @@ public class ClientElement : MonoBehaviour
     }
     private IEnumerator ClientWaitingTime()
     {
-        _presentTime = _clientWaitingTime;
+        _presentTime = 0f;
+        _timeBar[_slotInt].fillAmount = 0f;
 
-        while (_presentTime > 0)
+        while (_presentTime < _clientWaitingTime)
         {
-            _presentTime -= Time.deltaTime;
+            _presentTime += Time.deltaTime;
 
             _timeBar[_slotInt].fillAmount =
                 _presentTime / _clientWaitingTime;
@@ -111,8 +112,8 @@ public class ClientElement : MonoBehaviour
             yield return null;
         }
 
-        _presentTime = 0;
-        _timeBar[_slotInt].fillAmount = 0;
+        _presentTime = _clientWaitingTime;
+        _timeBar[_slotInt].fillAmount = 1f;
 
         _orderSystem.TakeDamege(_damege);
         OrderDone();
