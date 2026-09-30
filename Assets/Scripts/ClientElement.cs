@@ -7,6 +7,7 @@ public class ClientElement : MonoBehaviour
 {
     [SerializeField] private Slot _slot;
     private ClientSystem _clientSystem;
+    private ClientsType _clientType;
     private OrderSystem _orderSystem;
     private TypeOfMealAvailable _typeOfMeals;
     private MealType _type;
@@ -25,13 +26,14 @@ public class ClientElement : MonoBehaviour
     private float _presentTime;
     private AudioSource _bellRing;
     public void GetValue(float clientWaitingTime, int damege, Slot slot,
-    TypeOfMealAvailable typeOfMeal, int order)
+    TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType)
     {
         if(slot != _slot)
             return;
         _bellRing.Play();
         _orderDisplay[_slotInt].enabled = true;
         _typeOfMeals = typeOfMeal;
+        _clientType = clientsType;
         _isSlotAvalable = false;
         _clientUI.color = Color.gold;
         if (typeOfMeal == TypeOfMealAvailable.Appetizer)
@@ -85,6 +87,10 @@ public class ClientElement : MonoBehaviour
     }
     private void OrderDone()
     {
+        if(_clientType == ClientsType.Influencer)
+        {
+            _orderSystem.Heal();
+        }
         StopAllCoroutines();
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
@@ -123,7 +129,7 @@ public class ClientElement : MonoBehaviour
         _quantityOfOrder--;
         _timeBar[_slotInt].fillAmount = 0f;
         _orderDisplay[_slotInt].enabled = false;
-        _clientUI.color = Color.white;
+        _clientUI.color = Color.orange;
         yield return new WaitForSeconds(2.3f);
         _bellRing.Play();
         int randomMeal = Random.Range(1, 3);

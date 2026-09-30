@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public enum ClientsType
+{
+    NormalClients,
+    Critic,
+    Influencer
+}
 public class OrderSystem : MonoBehaviour
 {
     private List<int> _avalableSlot = new List<int>();
     private TypeOfMealAvailable[] _typeOfMeals;
+    private ClientsType _clientType;
     [Header("Client")]
     private Sprite _clientSprite;
     private float _clientWaitingTime;
@@ -24,11 +32,17 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private float _criticWaitingTime;
     [SerializeField] private int _criticDamege;
     [SerializeField] private int _criticQuantityOfOrder;
+    [Header("Influencer")]
+    [SerializeField] private Sprite _influencerSprite;
+    [SerializeField] private float _influencerWaitingTime;
+    [SerializeField] private int _influencerDamege;
+    [SerializeField] private int _influencerQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
     [SerializeField] private int _maxlife = 3;
     [SerializeField] private float _arrivalInterval = 5f;
-    [SerializeField] private int _clientAttendedUntilCritic = 8;
+    [SerializeField] private int _clientAttendedUntilSpecial = 8;
+    [SerializeField] private int _clientAttendedUntilinfluencer = 9;
     private int _clientsAtended;
     [SerializeField] private int _slotsAvailable;
     private int _currentlife;
@@ -100,6 +114,19 @@ public class OrderSystem : MonoBehaviour
             Time.timeScale = 0;
         }
     }
+    public void Heal()
+    {
+        if (_currentlife >= _maxlife)
+        {
+            _currentlife = _maxlife;
+            _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
+        }
+        else
+        {
+            _currentlife++;
+            _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
+        }
+    }
     public void ResetScene()
     {
         Time.timeScale = 1.0f;
@@ -133,21 +160,56 @@ public class OrderSystem : MonoBehaviour
             StartCoroutine(ClientsComing());
             yield break;
         }
-        if(_clientsAtended >= _clientAttendedUntilCritic -1)
+        if(_clientsAtended >= _clientAttendedUntilSpecial -1)
         {
-            print("Critic Coming");
-            _clientSprite = _criticClientSprite;
-            _clientWaitingTime = _criticWaitingTime;
-            _damege = _criticDamege;
-            _quantityOfOrder = _criticQuantityOfOrder;
+            int randomCase = Random.Range(1, 5);
+            switch (randomCase)
+            {
+                case 1:
+                    print("Critic Coming");
+                    _clientSprite = _criticClientSprite;
+                    _clientWaitingTime = _criticWaitingTime;
+                    _damege = _criticDamege;
+                    _quantityOfOrder = _criticQuantityOfOrder;
+                    _clientType.Equals(ClientsType.Critic);
+                    break;
+                case 2:
+                    print("Influencer coming");
+                    _clientSprite = _influencerSprite;
+                    _clientWaitingTime = _influencerWaitingTime;
+                    _damege = _influencerDamege;
+                    _influencerQuantityOfOrder = Random.Range(1, 4);
+                    _quantityOfOrder = _influencerQuantityOfOrder;
+                    _clientType.Equals(ClientsType.Influencer);
+                    break; 
+                case 3:
+                    print("Critic Coming");
+                    _clientSprite = _criticClientSprite;
+                    _clientWaitingTime = _criticWaitingTime;
+                    _damege = _criticDamege;
+                    _quantityOfOrder = _criticQuantityOfOrder;
+                    _clientType.Equals(ClientsType.Critic);
+                    break;
+                case 4:
+                    print("Influencer coming");
+                    _clientSprite = _influencerSprite;
+                    _clientWaitingTime = _influencerWaitingTime;
+                    _damege = _influencerDamege;
+                    _influencerQuantityOfOrder = Random.Range(1, 4);
+                    _quantityOfOrder = _influencerQuantityOfOrder;
+                    _clientType.Equals(ClientsType.Influencer);
+                    break;
+
+            }
         }
         else
         {
             _clientSprite = _normalClientSprite;
-            float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, 6);
+            float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
             _clientWaitingTime = _minimalNormalClientWaitingTime;
             _damege = _normalClientDamege;
             _quantityOfOrder = _normalClientQuantityOfOrder;
+            _clientType.Equals(ClientsType.NormalClients);
         }
         yield return new WaitForSeconds(_arrivalInterval);
         int randomSlot = Random.Range(1, _avalableSlot.Count);
@@ -161,14 +223,22 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1, _damege,
-                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 _avalableSlot.Remove(1);
-                if (_damege >= 3)
+                if (_clientType == ClientsType.Critic)
                 {
                     _alertText.text = "The critic arrived";
                     StartCoroutine(Disapear());
                     int _randomClientAtended = Random.Range(6, 15);
-                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientAttendedUntilSpecial = _randomClientAtended;
+                    _clientsAtended = 0;
+                }
+                else if (_clientType == ClientsType.Influencer)
+                {
+                    _alertText.text = "A influencer arrived";
+                    StartCoroutine(Disapear());
+                    int _randomClientAtended = Random.Range(6, 15);
+                    _clientAttendedUntilSpecial = _randomClientAtended;
                     _clientsAtended = 0;
                 }
                 break;
@@ -179,14 +249,14 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _damege,
-                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 _avalableSlot.Remove(2);
                 if (_damege >= 3)
                 {
                     _alertText.text = "The critic arrived";
                     StartCoroutine(Disapear());
                     int _randomClientAtended = Random.Range(6, 15);
-                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientAttendedUntilSpecial = _randomClientAtended;
                     _clientsAtended = 0;
                 }
                 break;
@@ -197,14 +267,14 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _damege,
-                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 _avalableSlot.Remove(3);
                 if (_damege >= 3)
                 {
                     _alertText.text = "The critic arrived";
                     StartCoroutine(Disapear());
                     int _randomClientAtended = Random.Range(6, 15);
-                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientAttendedUntilSpecial = _randomClientAtended;
                     _clientsAtended = 0;
                 }
                 break;
@@ -215,14 +285,14 @@ public class OrderSystem : MonoBehaviour
                     yield break;
                 }
                 clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _damege,
-                (TypeOfMealAvailable)randomMeal, _quantityOfOrder);
+                (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 _avalableSlot.Remove(4);
                 if (_damege >= 3)
                 {
                     _alertText.text = "The critic arrived";
                     StartCoroutine(Disapear());
                     int _randomClientAtended = Random.Range(6, 15);
-                    _clientAttendedUntilCritic = _randomClientAtended;
+                    _clientAttendedUntilSpecial = _randomClientAtended;
                     _clientsAtended = 0;
                 }
                 break;

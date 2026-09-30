@@ -25,13 +25,13 @@ public class ClientSystem : MonoBehaviour
     private bool _isSlotAvalable = true;
     //private Sprite _clientSprite;
     public void NewClient(float clientWaitingTime, Slot slot, int damege,
-    TypeOfMealAvailable typeOfMeal, int order)
+    TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType)
     {
         _isSlotAvalable = false;
         _orderSystem.GetConfirmationOfAvailableSlot(slot, _isSlotAvalable);
         for (int i = 0; i < _client.Length; i++)
         {
-            _client[i].GetValue(/*clientSprite,*/ clientWaitingTime, damege, slot, typeOfMeal, order);
+            _client[i].GetValue(/*clientSprite,*/ clientWaitingTime, damege, slot, typeOfMeal, order, clientsType);
         }
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
