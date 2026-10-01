@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public enum TypeOfMealAvailable
 {
+    None,
     Appetizer = 1,
     Dessert = 2
 }
@@ -26,7 +27,10 @@ public class MealType : MonoBehaviour
     private Button _dessertButton;
     private float _presentTimeAppetizer;
     private float _presentTimeDessert;
+    private float _presentTimeMotivation;
+    [SerializeField] private float _motivationDuration;
     private Image[] _timeBarMeals;
+    private Image _motivationTimeBar;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -38,6 +42,7 @@ public class MealType : MonoBehaviour
         _dessertText = GameController.Instance.DessertText;
         _alertText = GameController.Instance.AlertText;
         _timeBarMeals = GameController.Instance.TimeBarMeals;
+        _motivationTimeBar = GameController.Instance.MotivationTimeBar;
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
     }
@@ -151,5 +156,26 @@ public class MealType : MonoBehaviour
         {
             _clients[i].GetMealsValue(_appetizerReady, _dessertReady);
         }
+    }
+    public void Motivation()
+    {
+        StartCoroutine(MotivationDuration());
+    }
+    private IEnumerator MotivationDuration()
+    {
+        _timeOfCooking /= 2;
+        _motivationTimeBar.fillAmount = 1;
+        _presentTimeMotivation = _motivationDuration;
+        while (_presentTimeMotivation > 0)
+        {
+            _presentTimeMotivation -= Time.deltaTime;
+
+            _motivationTimeBar.fillAmount = _presentTimeMotivation / _motivationDuration;
+
+            yield return null;
+        }
+        _presentTimeMotivation = 0;
+        _motivationTimeBar.fillAmount = 0;
+        _timeOfCooking *= 2;
     }
 }

@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     public AudioSource Bell { get => _bell;}
     public TMP_Text OrderDonesText { get => _orderDonesText;}
     public TMP_Text TotalClientsAtendedText { get => _totalClientsAtendedText;}
+    public Image MotivationTimeBar { get => _motivationTimeBar;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -45,6 +46,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image[] _orderDisplay;
     [SerializeField] private Image[] _timeBarSlots;
     [SerializeField] private Image[] _timeBarMeals;
+    [SerializeField] private Image _motivationTimeBar;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
     [Header("Audio")]

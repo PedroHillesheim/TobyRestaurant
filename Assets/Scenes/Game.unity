@@ -2618,6 +2618,7 @@ RectTransform:
   - {fileID: 112214649}
   - {fileID: 2102779171}
   - {fileID: 193985979}
+  - {fileID: 2101676952}
   - {fileID: 1743304285}
   - {fileID: 2068390456}
   m_Father: {fileID: 279853000}
@@ -3221,6 +3222,7 @@ MonoBehaviour:
   _timeBarMeals:
   - {fileID: 1530406397}
   - {fileID: 33266597}
+  _motivationTimeBar: {fileID: 2101676953}
   _mealSprite:
   - {fileID: -1925366436623061462, guid: 4f9812de41cc4394b89d45456cef1ca1, type: 3}
   - {fileID: -3230578184117458652, guid: 43c6b9f5e2a544642a2eaa9ded539127, type: 3}
@@ -5299,6 +5301,7 @@ MonoBehaviour:
   _timeBarMeals:
   - {fileID: 348133930}
   - {fileID: 1966722024}
+  _motivationTimeBar: {fileID: 0}
   _mealSprite:
   - {fileID: -1925366436623061462, guid: 4f9812de41cc4394b89d45456cef1ca1, type: 3}
   - {fileID: -3230578184117458652, guid: 43c6b9f5e2a544642a2eaa9ded539127, type: 3}
@@ -5972,6 +5975,7 @@ MonoBehaviour:
   _clientSystem: {fileID: 1590092484}
   _timeOfCooking: 2
   _maxOfReadyMadeMeals: 3
+  _motivationDuration: 9
 --- !u!1 &1755039749
 GameObject:
   m_ObjectHideFlags: 0
@@ -6441,6 +6445,7 @@ MonoBehaviour:
   _clientSystem: {fileID: 1713306053}
   _timeOfCooking: 2
   _maxOfReadyMadeMeals: 3
+  _motivationDuration: 0
 --- !u!1 &1812982666
 GameObject:
   m_ObjectHideFlags: 0
@@ -7078,6 +7083,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068390455}
+  m_CullTransparentMesh: 1
+--- !u!1 &2101676951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101676952}
+  - component: {fileID: 2101676954}
+  - component: {fileID: 2101676953}
+  m_Layer: 0
+  m_Name: Motivation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2101676952
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101676951}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -15199.998}
+  m_LocalScale: {x: 73.351814, y: 73.351814, z: 73.351814}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 746258649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -325.17108, y: -956.84106}
+  m_SizeDelta: {x: 1.74, y: 1.38}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2101676953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101676951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -3865056444128683307, guid: 59f6635e5d05c5b4388755e16d9c166d, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 1
+  m_FillAmount: 0
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2101676954
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101676951}
   m_CullTransparentMesh: 1
 --- !u!1 &2102779170
 GameObject:

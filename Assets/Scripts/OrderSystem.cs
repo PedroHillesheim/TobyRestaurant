@@ -42,7 +42,6 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _maxlife = 3;
     [SerializeField] private float _arrivalInterval = 5f;
     [SerializeField] private int _clientAttendedUntilSpecial = 8;
-    [SerializeField] private int _clientAttendedUntilinfluencer = 9;
     private int _clientsAtended;
     [SerializeField] private int _slotsAvailable;
     private int _currentlife;

@@ -91,6 +91,10 @@ public class ClientElement : MonoBehaviour
         {
             _orderSystem.Heal();
         }
+        else if(_clientType == ClientsType.Critic)
+        {
+            _type.Motivation();
+        }
         StopAllCoroutines();
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
@@ -130,6 +134,7 @@ public class ClientElement : MonoBehaviour
         _timeBar[_slotInt].fillAmount = 0f;
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.orange;
+        _typeOfMeals = TypeOfMealAvailable.None;
         yield return new WaitForSeconds(2.3f);
         _bellRing.Play();
         int randomMeal = Random.Range(1, 3);
