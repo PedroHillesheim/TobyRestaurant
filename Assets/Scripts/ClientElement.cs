@@ -64,13 +64,13 @@ public class ClientElement : MonoBehaviour
         if(_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
-            _orderSystem.GetClientAtended();
+            _orderSystem.ClientAtended(_slot);
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Dessert && _readyDessert >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
-            _orderSystem.GetClientAtended();
+            _orderSystem.ClientAtended(_slot);
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder >= 2)

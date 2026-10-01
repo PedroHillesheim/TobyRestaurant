@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.IO;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public enum ClientsType
 {
@@ -11,15 +10,24 @@ public enum ClientsType
     Critic,
     Influencer
 }
+public class SaveScore
+{
+    public int _highestTotalClientsAtendede;
+    public SaveScore(int highestTotalClientsAtended)
+    {
+        _highestTotalClientsAtendede = highestTotalClientsAtended;
+    }
+    public int HighestScore { get => _highestTotalClientsAtendede; }
+}
 public class OrderSystem : MonoBehaviour
 {
     private List<int> _avalableSlot = new List<int>();
-    private TypeOfMealAvailable[] _typeOfMeals;
     private ClientsType _clientType;
     [Header("Client")]
     private Sprite _clientSprite;
     private float _clientWaitingTime;
     private int _damege;
+    private int _highestTotalClientsAtended;
     private int _quantityOfOrder;
     [Header("Normal Client")]
     [SerializeField] private Sprite _normalClientSprite;
@@ -39,45 +47,64 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _influencerQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
-    [SerializeField] private int _maxlife = 3;
     [SerializeField] private float _arrivalInterval = 5f;
     [SerializeField] private int _clientAttendedUntilSpecial = 8;
     private int _clientsAtended;
     [SerializeField] private int _slotsAvailable;
-    private int _currentlife;
     private bool _isSlot1Avalable = true;
     private bool _isSlot2Avalable = true;
     private bool _isSlot3Avalable = true;
     private bool _isSlot4Avalable = true;
-    private TMP_Text _lifeText;
-    private GameObject _losePainel;
     private TMP_Text _alertText;
     private TMP_Text _orderDoneText;
     private TMP_Text _totalClientAtendedText;
+    private TMP_Text _bestTotalClientAtendedText;
     private int _clientsAtendedTotal;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         clientSystem = GameController.Instance.ClientSystem;
         StartCoroutine(ClientsComing());
-        _lifeText = GameController.Instance.LifeText;
-        _losePainel = GameController.Instance.LosePainel;
-        _currentlife = _maxlife;
         _alertText = GameController.Instance.AlertText;
         _orderDoneText = GameController.Instance.OrderDonesText;
         _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
-        _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
-        _losePainel.SetActive(false);
+        _bestTotalClientAtendedText = GameController.Instance.BestTotalClientsAtendedText;
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
         }
+        LoadHighestScore();
     }
-    public void GetClientAtended()
+    public void VerifyBestScore()
     {
-        _clientsAtendedTotal++;
-        _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
-        _orderDoneText.text = _clientsAtendedTotal.ToString();
+        if (_clientsAtendedTotal >= _highestTotalClientsAtended)
+        {
+            _highestTotalClientsAtended = _clientsAtendedTotal;
+            _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
+            _bestTotalClientAtendedText.text = "";
+            SaveHighestScore();
+        }
+        else
+        {
+            _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
+            _bestTotalClientAtendedText.text = _highestTotalClientsAtended.ToString();
+        }
+    }
+    private void SaveHighestScore()
+    {
+        SaveScore status = new SaveScore(_highestTotalClientsAtended);
+        string json = JsonUtility.ToJson(status);
+        JsonUtility.ToJson(json);
+
+        string path = Application.persistentDataPath + "/bestScore.json";
+        File.WriteAllText(path, json);
+    }
+
+    private void LoadHighestScore()
+    {
+        string json = File.ReadAllText(Application.persistentDataPath + "/bestScore.json");
+        SaveScore status = JsonUtility.FromJson<SaveScore>(json);
+        _highestTotalClientsAtended = status.HighestScore;
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
     {
@@ -98,37 +125,17 @@ public class OrderSystem : MonoBehaviour
             _isSlot4Avalable = availableState;
         }
     }
-    public void TakeDamege(int damege)
-    {
-        if (_currentlife >= _maxlife)
-        {
-            _currentlife = _maxlife;
-        }       
-        _currentlife -= damege;
-        _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
-        if (_currentlife <= 0)
-        {
-            _losePainel.SetActive(true);
-            StopAllCoroutines();
-            Time.timeScale = 0;
-        }
-    }
-    public void Heal()
-    {
-        if (_currentlife >= _maxlife)
-        {
-            _currentlife = _maxlife;
-            _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
-        }
-        else
-        {
-            _currentlife++;
-            _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
-        }
-    }
     public void ClientAtended(Slot slot)
     {
         _clientsAtended++;
+        _clientsAtendedTotal++;
+        if (_clientsAtendedTotal >= _highestTotalClientsAtended)
+        {
+            _highestTotalClientsAtended = _clientsAtendedTotal;
+            SaveHighestScore();
+        }
+        _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
+        _orderDoneText.text = _clientsAtendedTotal.ToString();
         if (slot == Slot.Slot1)
         {
             _avalableSlot.Add(1);
@@ -156,7 +163,7 @@ public class OrderSystem : MonoBehaviour
         }
         if(_clientsAtended >= _clientAttendedUntilSpecial -1)
         {
-            int randomCase = Random.Range(1, 5);
+            int randomCase = Random.Range(1, 3);
             switch (randomCase)
             {
                 case 1:
@@ -166,7 +173,6 @@ public class OrderSystem : MonoBehaviour
                     _damege = _criticDamege;
                     _quantityOfOrder = _criticQuantityOfOrder;
                     _clientType = ClientsType.Critic;
-                    print("Client Type: " + _clientType);
                     break;
                 case 2:
                     print("Influencer coming");
@@ -174,29 +180,13 @@ public class OrderSystem : MonoBehaviour
                     _clientWaitingTime = _influencerWaitingTime;
                     _damege = _influencerDamege;
                     _influencerQuantityOfOrder = Random.Range(1, 4);
+                    if (_influencerQuantityOfOrder <= 1)
+                    {
+                        _influencerQuantityOfOrder = Random.Range(1, 4);
+                    }
                     _quantityOfOrder = _influencerQuantityOfOrder;
                     _clientType = ClientsType.Influencer;
-                    print("Client Type: " + _clientType);
                     break; 
-                case 3:
-                    print("Critic Coming");
-                    _clientSprite = _criticClientSprite;
-                    _clientWaitingTime = _criticWaitingTime;
-                    _damege = _criticDamege;
-                    _quantityOfOrder = _criticQuantityOfOrder;
-                    _clientType = ClientsType.Critic;
-                    print("Client Type: " + _clientType);
-                    break;
-                case 4:
-                    print("Influencer coming");
-                    _clientSprite = _influencerSprite;
-                    _clientWaitingTime = _influencerWaitingTime;
-                    _damege = _influencerDamege;
-                    _influencerQuantityOfOrder = Random.Range(1, 4);
-                    _quantityOfOrder = _influencerQuantityOfOrder;
-                    _clientType = ClientsType.Influencer;
-                    print("Client Type: " + _clientType);
-                    break;
             }
         }
         else
@@ -214,7 +204,6 @@ public class OrderSystem : MonoBehaviour
         switch (randomSlot)
         {
             case 1:
-                //print("Client Type: " + _clientType);
                 if (_isSlot1Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
@@ -241,7 +230,6 @@ public class OrderSystem : MonoBehaviour
                 (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 break;
             case 2:
-                //print("Client Type: " + _clientType);
                 if (_isSlot2Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
@@ -268,7 +256,6 @@ public class OrderSystem : MonoBehaviour
                 (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 break;
             case 3:
-                //print("Client Type: " + _clientType);
                 if (_isSlot3Avalable != true)
                 {
                     StartCoroutine(ClientsComing());
@@ -295,7 +282,6 @@ public class OrderSystem : MonoBehaviour
                 (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                 break;
             case 4:
-                //print("Client Type: " + _clientType);
                 if (_isSlot4Avalable != true)
                 {
                     StartCoroutine(ClientsComing());

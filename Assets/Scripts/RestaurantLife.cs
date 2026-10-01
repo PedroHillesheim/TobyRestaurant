@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class RestaurantLife : MonoBehaviour
 {
     [SerializeField] private int _maxlife = 3;
+    private OrderSystem _orderSystem;
     private int _currentLife;
     private TMP_Text _lifeText;
     private GameObject _losePainel;
@@ -13,7 +14,10 @@ public class RestaurantLife : MonoBehaviour
     {
         _lifeText = GameController.Instance.LifeText;
         _losePainel = GameController.Instance.LosePainel;
+        _orderSystem = GameController.Instance.OrderSystem;
         _currentLife = _maxlife;
+        _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
+        _losePainel.SetActive(false);
     }
     public void TakeDamege(int damege)
     {
@@ -26,6 +30,7 @@ public class RestaurantLife : MonoBehaviour
         if (_currentLife <= 0)
         {
             _losePainel.SetActive(true);
+            _orderSystem.VerifyBestScore();
             StopAllCoroutines();
             Time.timeScale = 0;
         }

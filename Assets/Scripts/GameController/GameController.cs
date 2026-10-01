@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
     public TMP_Text TotalClientsAtendedText { get => _totalClientsAtendedText;}
     public Image MotivationTimeBar { get => _motivationTimeBar;}
     public RestaurantLife RestaurantLife { get => restaurantLife;}
+    public TMP_Text BestTotalClientsAtendedText { get => _bestTotalClientsAtendedText;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text _lifeText;
     [SerializeField] private TMP_Text _orderDonesText;
     [SerializeField] private TMP_Text _totalClientsAtendedText;
+    [SerializeField] private TMP_Text _bestTotalClientsAtendedText;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
