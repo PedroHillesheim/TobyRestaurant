@@ -126,11 +126,6 @@ public class OrderSystem : MonoBehaviour
             _lifeText.text = _currentlife.ToString() + "/" + _maxlife.ToString();
         }
     }
-    public void ResetScene()
-    {
-        Time.timeScale = 1.0f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
     public void ClientAtended(Slot slot)
     {
         _clientsAtended++;

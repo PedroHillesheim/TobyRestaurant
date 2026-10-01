@@ -9,6 +9,7 @@ public class ClientElement : MonoBehaviour
     private ClientSystem _clientSystem;
     private ClientsType _clientType;
     private OrderSystem _orderSystem;
+    private RestaurantLife _restaurantLife;
     private TypeOfMealAvailable _typeOfMeals;
     private MealType _type;
     private Sprite _clientSprite;
@@ -89,7 +90,7 @@ public class ClientElement : MonoBehaviour
     {
         if(_clientType == ClientsType.Influencer)
         {
-            _orderSystem.Heal();
+            _restaurantLife.Heal();
         }
         else if(_clientType == ClientsType.Critic)
         {
@@ -125,7 +126,7 @@ public class ClientElement : MonoBehaviour
         _presentTime = _clientWaitingTime;
         _timeBar[_slotInt].fillAmount = 1f;
 
-        _orderSystem.TakeDamege(_damege);
+        _restaurantLife.TakeDamege(_damege);
         OrderDone();
     }
     private IEnumerator NextOrder()
@@ -161,6 +162,7 @@ public class ClientElement : MonoBehaviour
         _mealSprite = GameController.Instance.MealSprite;
         _bellRing = GameController.Instance.Bell;
         _timeBar = GameController.Instance.TimeBar;
+        _restaurantLife = GameController.Instance.RestaurantLife;
         if (_slot == Slot.Slot1)
         {
             _slotInt = 0;

@@ -24,12 +24,14 @@ public class GameController : MonoBehaviour
     public TMP_Text OrderDonesText { get => _orderDonesText;}
     public TMP_Text TotalClientsAtendedText { get => _totalClientsAtendedText;}
     public Image MotivationTimeBar { get => _motivationTimeBar;}
+    public RestaurantLife RestaurantLife { get => restaurantLife;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
     [SerializeField] private ClientSystem clientSystem;
     [SerializeField] private MealType mealType;
     [SerializeField] private ClientElement[] clientsElements;
+    [SerializeField] private RestaurantLife restaurantLife;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
     [Header("Text")]
