@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
 using UnityEngine;
-
 using UnityEngine.UI;
 
 public enum ClientsType
@@ -11,15 +9,6 @@ public enum ClientsType
     NormalClients,
     Critic,
     Influencer
-}
-public class SaveScore
-{
-    public int _highestTotalClientsAtendede;
-    public SaveScore(int highestTotalClientsAtended)
-    {
-        _highestTotalClientsAtendede = highestTotalClientsAtended;
-    }
-    public int HighestScore { get => _highestTotalClientsAtendede; }
 }
 public class OrderSystem : MonoBehaviour
 {
@@ -29,7 +18,6 @@ public class OrderSystem : MonoBehaviour
     private Sprite _clientSprite;
     private float _clientWaitingTime;
     private int _damege;
-    private int _highestTotalClientsAtended;
     private int _quantityOfOrder;
     [Header("Normal Client")]
     [SerializeField] private Sprite _normalClientSprite;
@@ -49,7 +37,7 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _influencerQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
-    [SerializeField] private EventSystem eventSystem;
+    private EventSystem eventSystem;
     [SerializeField] private float _arrivalInterval = 5f;
     [SerializeField] private int _clientAttendedUntilSpecial = 8;
     [SerializeField] private float _frenezyDuration;
@@ -60,13 +48,8 @@ public class OrderSystem : MonoBehaviour
     private bool _isSlot3Avalable = true;
     private bool _isSlot4Avalable = true;
     private bool _firstTime = true;
-    private TMP_Text _lifeText;
-    private GameObject _losePainel;
     private TMP_Text _alertText;
     private TMP_Text _orderDoneText;
-    private TMP_Text _totalClientAtendedText;
-    private TMP_Text _bestTotalClientAtendedText;
-    private int _clientsAtendedTotal;
     private float _presentTimeFrenezy;
     private Image _frenezyTimeBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -76,52 +59,12 @@ public class OrderSystem : MonoBehaviour
         StartCoroutine(ClientsComing());
         _alertText = GameController.Instance.AlertText;
         _orderDoneText = GameController.Instance.OrderDonesText;
-        _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
-        _bestTotalClientAtendedText = GameController.Instance.BestTotalClientsAtendedText;
-        _lifeText = GameController.Instance.LifeText;
-        _losePainel = GameController.Instance.LosePainel;
-        _alertText = GameController.Instance.AlertText;
-        _orderDoneText = GameController.Instance.OrderDonesText;
-        _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
         eventSystem = GameController.Instance.EventSystem;
         _frenezyTimeBar = GameController.Instance.FrenezyTimeBar;
-        _losePainel.SetActive(false);
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
         }
-        LoadHighestScore();
-    }
-    public void VerifyBestScore()
-    {
-        if (_clientsAtendedTotal >= _highestTotalClientsAtended)
-        {
-            _highestTotalClientsAtended = _clientsAtendedTotal;
-            _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
-            _bestTotalClientAtendedText.text = "";
-            SaveHighestScore();
-        }
-        else
-        {
-            _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
-            _bestTotalClientAtendedText.text = _highestTotalClientsAtended.ToString();
-        }
-    }
-    private void SaveHighestScore()
-    {
-        SaveScore status = new SaveScore(_highestTotalClientsAtended);
-        string json = JsonUtility.ToJson(status);
-        JsonUtility.ToJson(json);
-
-        string path = Application.persistentDataPath + "/bestScore.json";
-        File.WriteAllText(path, json);
-    }
-
-    private void LoadHighestScore()
-    {
-        string json = File.ReadAllText(Application.persistentDataPath + "/bestScore.json");
-        SaveScore status = JsonUtility.FromJson<SaveScore>(json);
-        _highestTotalClientsAtended = status.HighestScore;
     }
     public void GetConfirmationOfAvailableSlot(Slot slot, bool availableState)
     {
@@ -145,14 +88,6 @@ public class OrderSystem : MonoBehaviour
     public void ClientAtended(Slot slot)
     {
         _clientsAtended++;
-        _clientsAtendedTotal++;
-        if (_clientsAtendedTotal >= _highestTotalClientsAtended)
-        {
-            _highestTotalClientsAtended = _clientsAtendedTotal;
-            SaveHighestScore();
-        }
-        _totalClientAtendedText.text = _clientsAtendedTotal.ToString();
-        _orderDoneText.text = _clientsAtendedTotal.ToString();
         if (slot == Slot.Slot1)
         {
             _avalableSlot.Add(1);
@@ -207,7 +142,7 @@ public class OrderSystem : MonoBehaviour
             }
             if (_firstTime == true)
             {
-                eventSystem.StartChanceOfEvent();
+                eventSystem.StartChanceOfEvent(_arrivalInterval);
                 _firstTime = false;
             }
         }
@@ -337,9 +272,9 @@ public class OrderSystem : MonoBehaviour
         yield return new WaitForSeconds(2);
         _alertText.text = string.Empty;
     }
-    public void GetoFrenezy()
+    public void GetoFrenezy(float arrivalTimeEvent)
     {
-        StartCoroutine(FrenezyEvent());
+        _arrivalInterval = arrivalTimeEvent;
     }
     private IEnumerator FrenezyEvent()
     {

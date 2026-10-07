@@ -96,6 +96,7 @@ public class ClientElement : MonoBehaviour
         {
             _type.Motivation();
         }
+        _restaurantLife.ClientAtended();
         StopAllCoroutines();
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
