@@ -4,6 +4,8 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 
+using UnityEngine.UI;
+
 public enum ClientsType
 {
     NormalClients,
@@ -47,19 +49,26 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private int _influencerQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
+    [SerializeField] private EventSystem eventSystem;
     [SerializeField] private float _arrivalInterval = 5f;
     [SerializeField] private int _clientAttendedUntilSpecial = 8;
+    [SerializeField] private float _frenezyDuration;
     private int _clientsAtended;
     [SerializeField] private int _slotsAvailable;
     private bool _isSlot1Avalable = true;
     private bool _isSlot2Avalable = true;
     private bool _isSlot3Avalable = true;
     private bool _isSlot4Avalable = true;
+    private bool _firstTime = true;
+    private TMP_Text _lifeText;
+    private GameObject _losePainel;
     private TMP_Text _alertText;
     private TMP_Text _orderDoneText;
     private TMP_Text _totalClientAtendedText;
     private TMP_Text _bestTotalClientAtendedText;
     private int _clientsAtendedTotal;
+    private float _presentTimeFrenezy;
+    private Image _frenezyTimeBar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -69,6 +78,14 @@ public class OrderSystem : MonoBehaviour
         _orderDoneText = GameController.Instance.OrderDonesText;
         _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
         _bestTotalClientAtendedText = GameController.Instance.BestTotalClientsAtendedText;
+        _lifeText = GameController.Instance.LifeText;
+        _losePainel = GameController.Instance.LosePainel;
+        _alertText = GameController.Instance.AlertText;
+        _orderDoneText = GameController.Instance.OrderDonesText;
+        _totalClientAtendedText = GameController.Instance.TotalClientsAtendedText;
+        eventSystem = GameController.Instance.EventSystem;
+        _frenezyTimeBar = GameController.Instance.FrenezyTimeBar;
+        _losePainel.SetActive(false);
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
@@ -187,6 +204,11 @@ public class OrderSystem : MonoBehaviour
                     _quantityOfOrder = _influencerQuantityOfOrder;
                     _clientType = ClientsType.Influencer;
                     break; 
+            }
+            if (_firstTime == true)
+            {
+                eventSystem.StartChanceOfEvent();
+                _firstTime = false;
             }
         }
         else
@@ -314,5 +336,26 @@ public class OrderSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         _alertText.text = string.Empty;
+    }
+    public void GetoFrenezy()
+    {
+        StartCoroutine(FrenezyEvent());
+    }
+    private IEnumerator FrenezyEvent()
+    {
+        _arrivalInterval /= 2;
+        _frenezyTimeBar.fillAmount = 1;
+        _presentTimeFrenezy = _frenezyDuration;
+        while (_presentTimeFrenezy > 0)
+        {
+            _presentTimeFrenezy -= Time.deltaTime;
+
+            _frenezyTimeBar.fillAmount = _presentTimeFrenezy / _frenezyDuration;
+
+            yield return null;
+        }
+        _presentTimeFrenezy = 0;
+        _frenezyTimeBar.fillAmount = 0;
+        _arrivalInterval *= 2;
     }
 }

@@ -26,6 +26,8 @@ public class GameController : MonoBehaviour
     public Image MotivationTimeBar { get => _motivationTimeBar;}
     public RestaurantLife RestaurantLife { get => restaurantLife;}
     public TMP_Text BestTotalClientsAtendedText { get => _bestTotalClientsAtendedText;}
+    public EventSystem EventSystem { get => eventSystem;}
+    public Image FrenezyTimeBar { get => _frenezyTimeBar;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -33,6 +35,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private MealType mealType;
     [SerializeField] private ClientElement[] clientsElements;
     [SerializeField] private RestaurantLife restaurantLife;
+    [SerializeField] private EventSystem eventSystem;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
     [Header("Text")]
@@ -51,6 +54,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image[] _timeBarSlots;
     [SerializeField] private Image[] _timeBarMeals;
     [SerializeField] private Image _motivationTimeBar;
+    [SerializeField] private Image _frenezyTimeBar;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
     [Header("Audio")]
