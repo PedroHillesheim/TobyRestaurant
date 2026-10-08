@@ -21,14 +21,10 @@ public class ClientSystem : MonoBehaviour
     private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
     [SerializeField] private MealType _mealType;
-    private Slot _slot;
-    private bool _isSlotAvalable = true;
     //private Sprite _clientSprite;
     public void NewClient(float clientWaitingTime, Slot slot, int damege,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType)
     {
-        _isSlotAvalable = false;
-        _orderSystem.GetConfirmationOfAvailableSlot(slot, _isSlotAvalable);
         for (int i = 0; i < _client.Length; i++)
         {
             _client[i].GetValue(/*clientSprite,*/ clientWaitingTime, damege, slot, typeOfMeal, order, clientsType);

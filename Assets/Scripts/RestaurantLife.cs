@@ -34,6 +34,7 @@ public class RestaurantLife : MonoBehaviour
         _orderSystem = GameController.Instance.OrderSystem;
         _orderDoneText = GameController.Instance.OrderDonesText;
         _currentLife = _maxlife;
+        _orderDoneText.text = _clientsAtendedTotal.ToString();
         _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
         LoadHighestScore();
         _losePainel.SetActive(false);

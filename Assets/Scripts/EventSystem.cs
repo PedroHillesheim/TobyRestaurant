@@ -9,52 +9,65 @@ public class EventSystem : MonoBehaviour
     private float _presentTimeFrenezy;
     private Image _frenezyTimeBar;
     private bool _isFrenezyHappening = false;
+    [SerializeField] private float _timeForTryAgain;
     private void Start()
     {
         _orderSystem = GameController.Instance.OrderSystem;
         _frenezyTimeBar = GameController.Instance.FrenezyTimeBar;
     }
-    public void StartChanceOfEvent(float arrivalTime)
+    public void StartChanceOfEvent()
     {
-        StartCoroutine(EventChance(arrivalTime));
+        StartCoroutine(EventChance());
     }
-    private IEnumerator EventChance(float arrivalTime)
+    private IEnumerator EventChance()
     {
-        yield return new WaitUntil(() => !_isFrenezyHappening);
-        int EventChanceInt = Random.Range(4, 5);
-        print("Foi o antre switch e ranfodm");
-        switch (EventChanceInt)
+        while (true)
         {
-            case 0:
-                yield break;
-            case 1: 
-                yield break;
-            case 2: 
-                yield break;
-            case 3: 
-                yield break;
-            case 4:
-                StartCoroutine(FrenezyControlEvent(arrivalTime));
-                yield break;
-            case 5: 
-                yield break;
-            case 6: 
-                yield break;
-            case 7: 
-                yield break;
-            case 8: 
-                yield break;
-            case 9: 
-                yield break;
+            yield return new WaitUntil(() => !_isFrenezyHappening);
+            yield return new WaitForSeconds(_timeForTryAgain);
+            int EventChanceInt = Random.Range(0, 10);
+            switch (EventChanceInt)
+            {
+                case 0:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 1:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 2:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 3:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 4:
+                    print(EventChanceInt.ToString());
+                    StartCoroutine(FrenezyControlEvent());
+                    break;
+                case 5:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 6:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 7:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 8:
+                    print(EventChanceInt.ToString());
+                    break;
+                case 9:
+                    print(EventChanceInt.ToString());
+                    break;
 
+            }
         }
-        StartCoroutine(EventChance(arrivalTime));
     }
-    private IEnumerator FrenezyControlEvent(float _arrivalInterval)
+    private IEnumerator FrenezyControlEvent()
     {
+        print("Frenezy");
         _isFrenezyHappening = true;
-        _arrivalInterval /= 2;
-        _orderSystem.GetoFrenezy(_arrivalInterval);
+        _orderSystem.GetoFrenezy(0);
         _frenezyTimeBar.fillAmount = 1;
         _presentTimeFrenezy = _frenezyDuration;
         while (_presentTimeFrenezy > 0)
@@ -67,8 +80,9 @@ public class EventSystem : MonoBehaviour
         }
         _presentTimeFrenezy = 0;
         _frenezyTimeBar.fillAmount = 0;
-        _arrivalInterval *= 2;
-        _orderSystem.GetoFrenezy(_arrivalInterval);
+        int ramdomClient = Random.Range(6, 14);
+        _orderSystem.GetoFrenezy(ramdomClient);
+        print("frenezyOver");
         _isFrenezyHappening = false;
     }
 }

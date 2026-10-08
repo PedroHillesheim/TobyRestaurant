@@ -825,7 +825,7 @@ MonoBehaviour:
   _influencerDamege: 2
   _influencerQuantityOfOrder: 0
   clientSystem: {fileID: 1590092484}
-  _arrivalInterval: 1.5
+  _arrivalInterval: 2
   _clientAttendedUntilSpecial: 8
   _frenezyDuration: 10
   _slotsAvailable: 4
@@ -854,6 +854,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4321273f14892f45b4629113dde0e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventSystem
+  _frenezyDuration: 5
+  _timeForTryAgain: 2
 --- !u!1 &289155041
 GameObject:
   m_ObjectHideFlags: 0
