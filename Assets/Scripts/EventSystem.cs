@@ -21,46 +21,42 @@ public class EventSystem : MonoBehaviour
     }
     private IEnumerator EventChance()
     {
-        while (true)
+        yield return new WaitUntil(() => !_isFrenezyHappening);
+        yield return new WaitForSeconds(_timeForTryAgain);
+        int EventChanceInt = Random.Range(0, 10);
+        switch (EventChanceInt)
         {
-            yield return new WaitUntil(() => !_isFrenezyHappening);
-            yield return new WaitForSeconds(_timeForTryAgain);
-            int EventChanceInt = Random.Range(0, 10);
-            switch (EventChanceInt)
-            {
-                case 0:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 1:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 2:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 3:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 4:
-                    print(EventChanceInt.ToString());
-                    StartCoroutine(FrenezyControlEvent());
-                    break;
-                case 5:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 6:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 7:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 8:
-                    print(EventChanceInt.ToString());
-                    break;
-                case 9:
-                    print(EventChanceInt.ToString());
-                    break;
-
-            }
+            case 0:
+                print(EventChanceInt.ToString());
+                break;
+            case 1:
+                print(EventChanceInt.ToString());
+                break;
+            case 2:
+                print(EventChanceInt.ToString());
+                break;
+            case 3:
+                print(EventChanceInt.ToString());
+                break;
+            case 4:
+                print(EventChanceInt.ToString());
+                StartCoroutine(FrenezyControlEvent());
+                break;
+            case 5:
+                print(EventChanceInt.ToString());
+                break;
+            case 6:
+                print(EventChanceInt.ToString());
+                break;
+            case 7:
+                print(EventChanceInt.ToString());
+                break;
+            case 8:
+                print(EventChanceInt.ToString());
+                break;
+            case 9:
+                print(EventChanceInt.ToString());
+                break;
         }
     }
     private IEnumerator FrenezyControlEvent()

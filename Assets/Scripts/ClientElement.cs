@@ -26,6 +26,8 @@ public class ClientElement : MonoBehaviour
     private Image[] _timeBar;
     private float _presentTime;
     private AudioSource _bellRing;
+    private bool _isWaitinPacience;
+
     public void GetValue(float clientWaitingTime, int damege, Slot slot,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType)
     {
@@ -46,12 +48,12 @@ public class ClientElement : MonoBehaviour
             _orderDisplay[_slotInt].sprite = _mealSprite[1];
         }
         //_clientSprite = clientSprite;
+        _isWaitinPacience = true;
         _clientWaitingTime = clientWaitingTime;
-        _presentTime = _clientWaitingTime;
+        _presentTime = 0;
         _damege = damege;
         _typeOfMeals = typeOfMeal;
         _quantityOfOrder = order;
-        StartCoroutine(ClientWaitingTime());
     }
     public void GetMealsValue(int appetizer, int dessert)
     {
@@ -64,11 +66,13 @@ public class ClientElement : MonoBehaviour
         if(_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _restaurantLife.ClientAtended();
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Dessert && _readyDessert >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _restaurantLife.ClientAtended();
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder >= 2)
@@ -86,7 +90,11 @@ public class ClientElement : MonoBehaviour
     }
     private void OrderDone()
     {
-        if(_clientType == ClientsType.Influencer)
+        _isWaitinPacience = false;
+        print("========== ORDER DONE ==========");
+        print("Slot: " + _slot);
+        print("Client type: " + _clientType);
+        if (_clientType == ClientsType.Influencer)
         {
             _restaurantLife.Heal();
         }
@@ -94,7 +102,6 @@ public class ClientElement : MonoBehaviour
         {
             _type.Motivation();
         }
-        _restaurantLife.ClientAtended();
         StopAllCoroutines();
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
@@ -106,29 +113,29 @@ public class ClientElement : MonoBehaviour
         _presentTime = _clientWaitingTime;
         _damege = 0;
     }
-    private IEnumerator ClientWaitingTime()
+    private void Update()
     {
-        _presentTime = 0f;
-        _timeBar[_slotInt].fillAmount = 0f;
-
-        while (_presentTime < _clientWaitingTime)
+        if (_isWaitinPacience == true)
         {
             _presentTime += Time.deltaTime;
-
             _timeBar[_slotInt].fillAmount =
                 _presentTime / _clientWaitingTime;
 
-            yield return null;
+            
+            if (_presentTime >= _clientWaitingTime)
+            {
+                _presentTime = _clientWaitingTime;
+                _timeBar[_slotInt].fillAmount = 1f;
+                _restaurantLife.TakeDamege(_damege);
+                OrderDone();
+                _isWaitinPacience = false;
+            }
         }
-
-        _presentTime = _clientWaitingTime;
-        _timeBar[_slotInt].fillAmount = 1f;
-
-        _restaurantLife.TakeDamege(_damege);
-        OrderDone();
     }
     private IEnumerator NextOrder()
     {
+        _isWaitinPacience = false;
+        _presentTime = 0;
         _quantityOfOrder--;
         _timeBar[_slotInt].fillAmount = 0f;
         _orderDisplay[_slotInt].enabled = false;
@@ -148,7 +155,7 @@ public class ClientElement : MonoBehaviour
         {
             _orderDisplay[_slotInt].sprite = _mealSprite[1];
         }
-        StartCoroutine(ClientWaitingTime());
+        _isWaitinPacience = true;
     }
     private void Start()
     {

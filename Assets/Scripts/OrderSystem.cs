@@ -86,13 +86,6 @@ public class OrderSystem : MonoBehaviour
     }
     private IEnumerator ClientsComing()
     {
-        while (true)
-        {
-            if (_avalableSlot.Count == 0)
-            {
-                print("No primeiro if que na teoria é inutil");
-                continue;
-            }
             if (_clientsAtended >= _clientAttendedUntilSpecial - 1)
             {
                 int randomCase = Random.Range(1, 3);
@@ -211,7 +204,7 @@ public class OrderSystem : MonoBehaviour
                     (TypeOfMealAvailable)randomMeal, _quantityOfOrder, _clientType);
                     break;
             }
-        }
+        StartCoroutine(ClientsComing());
     }
     private IEnumerator Disapear()
     {
