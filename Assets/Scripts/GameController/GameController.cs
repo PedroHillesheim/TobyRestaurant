@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
     public TMP_Text BestTotalClientsAtendedText { get => _bestTotalClientsAtendedText;}
     public EventSystem EventSystem { get => eventSystem;}
     public Image FrenezyTimeBar { get => _frenezyTimeBar;}
+    public Image BackGroundColor { get => _backGroundColor;}
+    public Image DesmotivationTimeBar { get => _desmotivationTimeBar;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -54,7 +56,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image[] _timeBarSlots;
     [SerializeField] private Image[] _timeBarMeals;
     [SerializeField] private Image _motivationTimeBar;
+    [SerializeField] private Image _desmotivationTimeBar;
     [SerializeField] private Image _frenezyTimeBar;
+    [SerializeField] private Image _backGroundColor;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
     [Header("Audio")]

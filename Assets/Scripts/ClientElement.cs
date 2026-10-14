@@ -1,5 +1,4 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,9 +90,6 @@ public class ClientElement : MonoBehaviour
     private void OrderDone()
     {
         _isWaitinPacience = false;
-        print("========== ORDER DONE ==========");
-        print("Slot: " + _slot);
-        print("Client type: " + _clientType);
         if (_clientType == ClientsType.Influencer)
         {
             _restaurantLife.Heal();
@@ -127,10 +123,26 @@ public class ClientElement : MonoBehaviour
                 _presentTime = _clientWaitingTime;
                 _timeBar[_slotInt].fillAmount = 1f;
                 _restaurantLife.TakeDamege(_damege);
-                OrderDone();
-                _isWaitinPacience = false;
+                if (_clientType == ClientsType.Karen)
+                {
+                    StartCoroutine(KarenBeingKaren());
+                    _isWaitinPacience = false;
+                }
+                else
+                {
+                    OrderDone();
+                    _isWaitinPacience = false;
+                }
             }
         }
+    }
+    private IEnumerator KarenBeingKaren()
+    {
+        _clientUI.color = Color.black;
+        _orderDisplay[_slotInt].enabled = false;
+        _type.Desmotivation();
+        yield return new WaitForSeconds(3f);
+        OrderDone();
     }
     private IEnumerator NextOrder()
     {

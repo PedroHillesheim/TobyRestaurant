@@ -2,6 +2,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SaveScore
 {
@@ -15,6 +16,7 @@ public class SaveScore
 public class RestaurantLife : MonoBehaviour
 {
     [SerializeField] private int _maxlife = 3;
+    private Image _backGroundColor;
     private OrderSystem _orderSystem;
     private int _currentLife;
     private TMP_Text _lifeText;
@@ -24,6 +26,7 @@ public class RestaurantLife : MonoBehaviour
     private TMP_Text _totalClientAtendedText;
     private TMP_Text _bestTotalClientAtendedText;
     private int _clientsAtendedTotal;
+    private int _nextChangeofColor = 10;
 
     private void Start()
     {
@@ -33,6 +36,7 @@ public class RestaurantLife : MonoBehaviour
         _bestTotalClientAtendedText = GameController.Instance.BestTotalClientsAtendedText;
         _orderSystem = GameController.Instance.OrderSystem;
         _orderDoneText = GameController.Instance.OrderDonesText;
+        _backGroundColor = GameController.Instance.BackGroundColor;
         _currentLife = _maxlife;
         _orderDoneText.text = _clientsAtendedTotal.ToString();
         _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
@@ -43,6 +47,11 @@ public class RestaurantLife : MonoBehaviour
     {
         _clientsAtendedTotal++;
         _orderDoneText.text = _clientsAtendedTotal.ToString();
+        if(_clientsAtendedTotal >= _nextChangeofColor)
+        {
+            _backGroundColor.color = Random.ColorHSV();
+            _nextChangeofColor *= 2;
+        }
         VerifyBestScore();
     }
     private void SaveHighestScore()

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,9 +29,13 @@ public class MealType : MonoBehaviour
     private float _presentTimeAppetizer;
     private float _presentTimeDessert;
     private float _presentTimeMotivation;
+    private float _presentTimeDesmotivation;
     [SerializeField] private float _motivationDuration;
+    [SerializeField] private float _desmotivationDuration;
     private Image[] _timeBarMeals;
     private Image _motivationTimeBar;
+    private Image _desmotivationTimeBar;
+    private bool _karenAtack = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -43,6 +48,7 @@ public class MealType : MonoBehaviour
         _alertText = GameController.Instance.AlertText;
         _timeBarMeals = GameController.Instance.TimeBarMeals;
         _motivationTimeBar = GameController.Instance.MotivationTimeBar;
+        _desmotivationTimeBar = GameController.Instance.DesmotivationTimeBar;
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
     }
@@ -52,7 +58,8 @@ public class MealType : MonoBehaviour
     }
     private IEnumerator CookingMeal(TypeOfMealAvailable type)
     {
-        if (type == TypeOfMealAvailable.Appetizer && _isCookingAppetizer == false)
+        if (_karenAtack == true) { }
+        else if (type == TypeOfMealAvailable.Appetizer && _isCookingAppetizer == false)
         {
             if (_appetizerReady >= _maxOfReadyMadeMeals)
             {
@@ -161,6 +168,10 @@ public class MealType : MonoBehaviour
     {
         StartCoroutine(MotivationDuration());
     }
+    public void Desmotivation()
+    {
+        StartCoroutine(DesmotivationDuration());
+    }
     private IEnumerator MotivationDuration()
     {
         _timeOfCooking /= 2;
@@ -177,5 +188,22 @@ public class MealType : MonoBehaviour
         _presentTimeMotivation = 0;
         _motivationTimeBar.fillAmount = 0;
         _timeOfCooking *= 2;
+    }
+    private IEnumerator DesmotivationDuration()
+    {
+        _karenAtack = true;
+        _desmotivationTimeBar.fillAmount = 1;
+        _presentTimeDesmotivation = _desmotivationDuration;
+        while (_presentTimeDesmotivation > 0)
+        {
+            _presentTimeDesmotivation -= Time.deltaTime;
+
+            _desmotivationTimeBar.fillAmount = _presentTimeDesmotivation / _desmotivationDuration;
+
+            yield return null;
+        }
+        _presentTimeDesmotivation = 0;
+        _desmotivationTimeBar.fillAmount = 0;
+        _karenAtack = false;
     }
 }

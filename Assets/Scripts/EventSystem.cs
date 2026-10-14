@@ -27,41 +27,31 @@ public class EventSystem : MonoBehaviour
         switch (EventChanceInt)
         {
             case 0:
-                print(EventChanceInt.ToString());
                 break;
             case 1:
-                print(EventChanceInt.ToString());
                 break;
             case 2:
-                print(EventChanceInt.ToString());
                 break;
             case 3:
-                print(EventChanceInt.ToString());
                 break;
             case 4:
-                print(EventChanceInt.ToString());
                 StartCoroutine(FrenezyControlEvent());
                 break;
             case 5:
-                print(EventChanceInt.ToString());
                 break;
             case 6:
-                print(EventChanceInt.ToString());
                 break;
             case 7:
-                print(EventChanceInt.ToString());
                 break;
             case 8:
-                print(EventChanceInt.ToString());
                 break;
             case 9:
-                print(EventChanceInt.ToString());
                 break;
         }
+        StartCoroutine(EventChance());
     }
     private IEnumerator FrenezyControlEvent()
     {
-        print("Frenezy");
         _isFrenezyHappening = true;
         _orderSystem.GetoFrenezy(0);
         _frenezyTimeBar.fillAmount = 1;
@@ -78,7 +68,6 @@ public class EventSystem : MonoBehaviour
         _frenezyTimeBar.fillAmount = 0;
         int ramdomClient = Random.Range(6, 14);
         _orderSystem.GetoFrenezy(ramdomClient);
-        print("frenezyOver");
         _isFrenezyHappening = false;
     }
 }
