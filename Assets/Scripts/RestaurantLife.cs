@@ -26,7 +26,7 @@ public class RestaurantLife : MonoBehaviour
     private TMP_Text _totalClientAtendedText;
     private TMP_Text _bestTotalClientAtendedText;
     private int _clientsAtendedTotal;
-    private int _nextChangeofColor = 10;
+    private int _nextChangeofColor = 20;
 
     private void Start()
     {
@@ -50,7 +50,7 @@ public class RestaurantLife : MonoBehaviour
         if(_clientsAtendedTotal >= _nextChangeofColor)
         {
             _backGroundColor.color = Random.ColorHSV();
-            _nextChangeofColor *= 2;
+            _nextChangeofColor += 20;
         }
         VerifyBestScore();
     }

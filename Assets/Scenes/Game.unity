@@ -828,6 +828,10 @@ MonoBehaviour:
   _karenWaitingTime: 2
   _karenDamege: 1
   _karenQuantityOfOrder: 1
+  _monsterSprite: {fileID: 0}
+  _monsterWaitingTime: 4
+  _monsterDamege: 1
+  _monsterQuantityOfOrder: 1
   clientSystem: {fileID: 1590092484}
   _arrivalInterval: 2
   _clientAttendedUntilSpecial: 8
@@ -1356,6 +1360,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435149729}
+  m_CullTransparentMesh: 1
+--- !u!1 &436826985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 436826986}
+  - component: {fileID: 436826988}
+  - component: {fileID: 436826987}
+  m_Layer: 5
+  m_Name: Bluur
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &436826986
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436826985}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 746258649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 4.499695, y: -177.25}
+  m_SizeDelta: {x: 150.57, y: 579.39}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &436826987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436826985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 0.57254905}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &436826988
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436826985}
   m_CullTransparentMesh: 1
 --- !u!1 &510287572
 GameObject:
@@ -2698,6 +2777,7 @@ RectTransform:
   - {fileID: 749805305}
   - {fileID: 1723254009}
   - {fileID: 1743304285}
+  - {fileID: 436826986}
   - {fileID: 2068390456}
   m_Father: {fileID: 279853000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3222,6 +3302,7 @@ MonoBehaviour:
   restaurantLife: {fileID: 279853002}
   eventSystem: {fileID: 279853003}
   _losePainel: {fileID: 2068390455}
+  _blur: {fileID: 436826985}
   appetizerText: {fileID: 634103077}
   dessertText: {fileID: 289155043}
   _alertText: {fileID: 112214650}
@@ -3252,6 +3333,7 @@ MonoBehaviour:
   - {fileID: -1925366436623061462, guid: 4f9812de41cc4394b89d45456cef1ca1, type: 3}
   - {fileID: -3230578184117458652, guid: 43c6b9f5e2a544642a2eaa9ded539127, type: 3}
   _bell: {fileID: 968979487}
+  _timeofBlur: 7
 --- !u!4 &968979486
 Transform:
   m_ObjectHideFlags: 0
@@ -5668,6 +5750,7 @@ MonoBehaviour:
   restaurantLife: {fileID: 279853002}
   eventSystem: {fileID: 0}
   _losePainel: {fileID: 1081695743}
+  _blur: {fileID: 0}
   appetizerText: {fileID: 1132414078}
   dessertText: {fileID: 1474254546}
   _alertText: {fileID: 905092007}
@@ -5698,6 +5781,7 @@ MonoBehaviour:
   - {fileID: -1925366436623061462, guid: 4f9812de41cc4394b89d45456cef1ca1, type: 3}
   - {fileID: -3230578184117458652, guid: 43c6b9f5e2a544642a2eaa9ded539127, type: 3}
   _bell: {fileID: 1566760242}
+  _timeofBlur: 0
 --- !u!4 &1566760244
 Transform:
   m_ObjectHideFlags: 0

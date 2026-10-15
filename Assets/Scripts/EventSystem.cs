@@ -10,10 +10,14 @@ public class EventSystem : MonoBehaviour
     private Image _frenezyTimeBar;
     private bool _isFrenezyHappening = false;
     [SerializeField] private float _timeForTryAgain;
+    private GameObject _blur;
+    private float _timeOfBlur;
     private void Start()
     {
         _orderSystem = GameController.Instance.OrderSystem;
         _frenezyTimeBar = GameController.Instance.FrenezyTimeBar;
+        _blur = GameController.Instance.Blur;
+        _timeOfBlur = GameController.Instance.TimeofBlur;
     }
     public void StartChanceOfEvent()
     {
@@ -69,5 +73,15 @@ public class EventSystem : MonoBehaviour
         int ramdomClient = Random.Range(6, 14);
         _orderSystem.GetoFrenezy(ramdomClient);
         _isFrenezyHappening = false;
+    }
+    public void Blur()
+    {
+        StartCoroutine(BlurTime());
+    }
+    private IEnumerator BlurTime()
+    {
+        _blur.SetActive(true);
+        yield return new WaitForSeconds(_timeOfBlur);
+        _blur.SetActive(false);
     }
 }

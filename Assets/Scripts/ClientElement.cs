@@ -8,6 +8,7 @@ public class ClientElement : MonoBehaviour
     private ClientSystem _clientSystem;
     private ClientsType _clientType;
     private OrderSystem _orderSystem;
+    private EventSystem eventSystem;
     private RestaurantLife _restaurantLife;
     private TypeOfMealAvailable _typeOfMeals;
     private MealType _type;
@@ -38,6 +39,10 @@ public class ClientElement : MonoBehaviour
         _clientType = clientsType;
         _isSlotAvalable = false;
         _clientUI.color = Color.gold;
+        if (_clientType == ClientsType.Monster)
+        {
+            _clientUI.color = Color.red;
+        }
         if (typeOfMeal == TypeOfMealAvailable.Appetizer)
         {
             _orderDisplay[_slotInt].sprite = _mealSprite[0];
@@ -99,6 +104,11 @@ public class ClientElement : MonoBehaviour
             _type.Motivation();
         }
         StopAllCoroutines();
+        if (_clientType == ClientsType.Monster)
+        {
+            _restaurantLife.TakeDamege(_damege);
+            eventSystem.Blur();
+        }
         _orderDisplay[_slotInt].enabled = false;
         _clientUI.color = Color.white;
         _isSlotAvalable = true;
@@ -122,14 +132,28 @@ public class ClientElement : MonoBehaviour
             {
                 _presentTime = _clientWaitingTime;
                 _timeBar[_slotInt].fillAmount = 1f;
-                _restaurantLife.TakeDamege(_damege);
-                if (_clientType == ClientsType.Karen)
+                if(_clientType == ClientsType.Monster)
                 {
+                    _isWaitinPacience = false;
+                    _orderDisplay[_slotInt].enabled = false;
+                    _clientUI.color = Color.white;
+                    _isSlotAvalable = true;
+                    _orderSystem.ClientAtended(_slot);
+                    _quantityOfOrder = 0;
+                    _clientWaitingTime = 0;
+                    _timeBar[_slotInt].fillAmount = 0f;
+                    _presentTime = _clientWaitingTime;
+                    _damege = 0;
+                }  
+                else if (_clientType == ClientsType.Karen)
+                {
+                    _restaurantLife.TakeDamege(_damege);
                     StartCoroutine(KarenBeingKaren());
                     _isWaitinPacience = false;
                 }
                 else
                 {
+                    _restaurantLife.TakeDamege(_damege);
                     OrderDone();
                     _isWaitinPacience = false;
                 }
@@ -180,6 +204,7 @@ public class ClientElement : MonoBehaviour
         _bellRing = GameController.Instance.Bell;
         _timeBar = GameController.Instance.TimeBar;
         _restaurantLife = GameController.Instance.RestaurantLife;
+        eventSystem = GameController.Instance.EventSystem;
         if (_slot == Slot.Slot1)
         {
             _slotInt = 0;

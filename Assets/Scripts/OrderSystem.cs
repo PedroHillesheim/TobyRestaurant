@@ -9,7 +9,8 @@ public enum ClientsType
     NormalClients,
     Critic,
     Influencer,
-    Karen
+    Karen,
+    Monster
 }
 public class OrderSystem : MonoBehaviour
 {
@@ -41,6 +42,11 @@ public class OrderSystem : MonoBehaviour
     [SerializeField] private float _karenWaitingTime;
     [SerializeField] private int _karenDamege;
     [SerializeField] private int _karenQuantityOfOrder;
+    [Header("Monster")]
+    [SerializeField] private Sprite _monsterSprite;
+    [SerializeField] private float _monsterWaitingTime;
+    [SerializeField] private int _monsterDamege;
+    [SerializeField] private int _monsterQuantityOfOrder;
     [Header("Values")]
     [SerializeField] private ClientSystem clientSystem;
     private EventSystem eventSystem;
@@ -92,54 +98,54 @@ public class OrderSystem : MonoBehaviour
     }
     private IEnumerator ClientsComing()
     {
-            if (_clientsAtended >= _clientAttendedUntilSpecial - 1)
+        if (_clientsAtended >= _clientAttendedUntilSpecial - 1)
+        {
+            int randomCase = Random.Range(1, 4);
+            switch (randomCase)
             {
-                int randomCase = Random.Range(1, 4);
-                switch (randomCase)
-                {
-                    case 1:
-                        _clientSprite = _criticClientSprite;
-                        _clientWaitingTime = _criticWaitingTime;
-                        _clientDamege = _criticDamege;
-                        _clientQuantityOfOrder = _criticQuantityOfOrder;
-                        _clientType = ClientsType.Critic;
-                        _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
-                        break;
-                    case 2:
-                        _clientSprite = _influencerSprite;
-                        _clientWaitingTime = _influencerWaitingTime;
-                        _clientDamege = _influencerDamege;
+                case 1:
+                    _clientSprite = _criticClientSprite;
+                    _clientWaitingTime = _criticWaitingTime;
+                    _clientDamege = _criticDamege;
+                    _clientQuantityOfOrder = _criticQuantityOfOrder;
+                    _clientType = ClientsType.Critic;
+                    _clientsAtended = 0;
+                    if (_onFrenezy == false)
+                    {
+                        int _randomClientAtended = Random.Range(6, 15);
+                        _clientAttendedUntilSpecial = _randomClientAtended;
+                    }
+                    break;
+                case 2:
+                    _clientSprite = _influencerSprite;
+                    _clientWaitingTime = _influencerWaitingTime;
+                    _clientDamege = _influencerDamege;
+                    _influencerQuantityOfOrder = Random.Range(1, 4);
+                    if (_influencerQuantityOfOrder <= 1)
+                    {
                         _influencerQuantityOfOrder = Random.Range(1, 4);
-                        if (_influencerQuantityOfOrder <= 1)
-                        {
-                            _influencerQuantityOfOrder = Random.Range(1, 4);
-                        }
-                        _clientQuantityOfOrder = _influencerQuantityOfOrder;
-                        _clientType = ClientsType.Influencer;
-                        _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
-                        break;
-                    case 3:
-                        _clientSprite = _karenSprite;
-                        _clientWaitingTime = _karenWaitingTime;
-                        _clientDamege = _karenDamege; 
-                        _clientQuantityOfOrder = _karenQuantityOfOrder;
-                        _clientType = ClientsType.Karen; 
-                        _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
+                    }
+                    _clientQuantityOfOrder = _influencerQuantityOfOrder;
+                    _clientType = ClientsType.Influencer;
+                    _clientsAtended = 0;
+                    if (_onFrenezy == false)
+                    {
+                        int _randomClientAtended = Random.Range(6, 15);
+                        _clientAttendedUntilSpecial = _randomClientAtended;
+                    }
+                    break;
+                case 3:
+                    _clientSprite = _monsterSprite;
+                    _clientWaitingTime = _monsterWaitingTime;
+                    _clientDamege = _monsterDamege;
+                    _clientQuantityOfOrder = _monsterQuantityOfOrder;
+                    _clientType = ClientsType.Monster;
+                    _clientsAtended = 0;
+                    if (_onFrenezy == false)
+                    {
+                        int _randomClientAtended = Random.Range(6, 15);
+                        _clientAttendedUntilSpecial = _randomClientAtended;
+                    }
                     break;
                 }
                 if (_firstTime == true)
@@ -150,14 +156,52 @@ public class OrderSystem : MonoBehaviour
             }
             else
             {
-                _clientSprite = _normalClientSprite;
-                float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
-                _clientWaitingTime = _minimalNormalClientWaitingTime;
-                _clientDamege = _normalClientDamege;
-                _clientQuantityOfOrder = _normalClientQuantityOfOrder;
-                _clientType = ClientsType.NormalClients;
+                int ramdomCase = Random.Range(0, 5);
+                switch (ramdomCase)
+                {
+                case 0:
+                    _clientSprite = _normalClientSprite;
+                    float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                    _clientWaitingTime = randomWaitingTime;
+                    _clientDamege = _normalClientDamege;
+                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                    _clientType = ClientsType.NormalClients;
+                    break;
+                case 1:
+                    _clientSprite = _karenSprite;
+                    _clientWaitingTime = _karenWaitingTime;
+                    _clientDamege = _karenDamege;
+                    _clientQuantityOfOrder = _karenQuantityOfOrder;
+                    _clientType = ClientsType.Karen;
+                    break;
+                case 2:
+                    _clientSprite = _normalClientSprite;
+                    float randomWaitingTime2 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                    _clientWaitingTime = randomWaitingTime2;
+                    _clientDamege = _normalClientDamege;
+                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                    _clientType = ClientsType.NormalClients;
+                    break;
+                case 3:
+                    _clientSprite = _normalClientSprite;
+                    float randomWaitingTime3 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                    _clientWaitingTime = randomWaitingTime3;
+                    _clientDamege = _normalClientDamege;
+                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                    _clientType = ClientsType.NormalClients;
+                    break;
+                case 4:
+                    _clientSprite = _normalClientSprite;
+                    float randomWaitingTime4 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                    _clientWaitingTime = randomWaitingTime4;
+                    _clientDamege = _normalClientDamege;
+                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                    _clientType = ClientsType.NormalClients;
+                    break;
+                } 
             }
             yield return new WaitForSeconds(_arrivalInterval);
+            yield return new WaitUntil(() => _avalableSlot.Count > 0);
             int randomIndex = Random.Range(0, _avalableSlot.Count);
             int randomSlot = _avalableSlot[randomIndex];
             _avalableSlot.RemoveAt(randomIndex);

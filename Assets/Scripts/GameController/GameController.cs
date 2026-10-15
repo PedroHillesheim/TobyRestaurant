@@ -30,6 +30,8 @@ public class GameController : MonoBehaviour
     public Image FrenezyTimeBar { get => _frenezyTimeBar;}
     public Image BackGroundColor { get => _backGroundColor;}
     public Image DesmotivationTimeBar { get => _desmotivationTimeBar;}
+    public GameObject Blur { get => _blur;}
+    public float TimeofBlur { get => _timeofBlur;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -40,6 +42,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
+    [SerializeField] private GameObject _blur;
     [Header("Text")]
     [SerializeField] private TMP_Text appetizerText;
     [SerializeField] private TMP_Text dessertText;
@@ -63,6 +66,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Sprite[] _mealSprite;
     [Header("Audio")]
     [SerializeField] private AudioSource _bell;
+    [Header("Float")]
+    [SerializeField] private float _timeofBlur;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
