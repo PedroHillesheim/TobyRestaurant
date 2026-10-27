@@ -16,6 +16,7 @@ public class OrderSystem : MonoBehaviour
 {
     private List<int> _avalableSlot = new List<int>();
     private ClientsType _clientType;
+    private RatsSpawner _spawner;
     [Header("Client")]
     private Sprite _clientSprite;
     private float _clientWaitingTime;
@@ -64,6 +65,7 @@ public class OrderSystem : MonoBehaviour
         clientSystem = GameController.Instance.ClientSystem;
         _alertText = GameController.Instance.AlertText;
         eventSystem = GameController.Instance.EventSystem;
+        _spawner = GameController.Instance.RatsSpawner;
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
@@ -151,6 +153,7 @@ public class OrderSystem : MonoBehaviour
                 if (_firstTime == true)
                 {
                     eventSystem.StartChanceOfEvent();
+                    _spawner.StartRatspawner();
                     _firstTime = false;
                 }
             }

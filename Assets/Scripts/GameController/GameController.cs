@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
     public float TimeofBlur { get => _timeofBlur;}
     public GameObject[] Rats { get => _rats;}
     public RatsSpawner RatsSpawner { get => ratsSpawner;}
+    public GameObject SwitchSceneButton { get => _switchSceneButton;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _losePainel;
     [SerializeField] private GameObject _blur;
     [SerializeField] private GameObject[] _rats;
+    [SerializeField] private GameObject _switchSceneButton;
     [Header("Text")]
     [SerializeField] private TMP_Text appetizerText;
     [SerializeField] private TMP_Text dessertText;
