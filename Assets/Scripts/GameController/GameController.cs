@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
     public Image DesmotivationTimeBar { get => _desmotivationTimeBar;}
     public GameObject Blur { get => _blur;}
     public float TimeofBlur { get => _timeofBlur;}
+    public GameObject[] Rats { get => _rats;}
+    public RatsSpawner RatsSpawner { get => ratsSpawner;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -40,9 +42,11 @@ public class GameController : MonoBehaviour
     [SerializeField] private ClientElement[] clientsElements;
     [SerializeField] private RestaurantLife restaurantLife;
     [SerializeField] private EventSystem eventSystem;
+    [SerializeField] private RatsSpawner ratsSpawner;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
     [SerializeField] private GameObject _blur;
+    [SerializeField] private GameObject[] _rats;
     [Header("Text")]
     [SerializeField] private TMP_Text appetizerText;
     [SerializeField] private TMP_Text dessertText;
