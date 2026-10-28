@@ -27,6 +27,10 @@ public class ClientElement : MonoBehaviour
     private float _presentTime;
     private AudioSource _bellRing;
     private bool _isWaitinPacience;
+    [SerializeField] private float _appetizerPrize;
+    [SerializeField] private float _dessertPrize;
+    private float _money;
+    private Store _store;
 
     public void GetValue(float clientWaitingTime, int damege, Slot slot,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType)
@@ -70,24 +74,32 @@ public class ClientElement : MonoBehaviour
         if(_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _money =+ _appetizerPrize;
+            _store.UpdateMoney(_money);
             _restaurantLife.ClientAtended();
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Dessert && _readyDessert >= 1 && _quantityOfOrder == 1)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _money = +_dessertPrize;
+            _store.UpdateMoney(_money);
             _restaurantLife.ClientAtended();
             OrderDone();
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Appetizer && _readyAppertizer >= 1 && _quantityOfOrder >= 2)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _money = +_appetizerPrize;
+            _store.UpdateMoney(_money);
             StopAllCoroutines();
             StartCoroutine(NextOrder());
         }
         else if (_typeOfMeals == TypeOfMealAvailable.Dessert && _readyDessert >= 1 && _quantityOfOrder >= 2)
         {
             _type.GetMealSubstraction(_typeOfMeals);
+            _money = +_dessertPrize;
+            _store.UpdateMoney(_money);
             StopAllCoroutines();
             StartCoroutine(NextOrder());
         }
@@ -205,6 +217,7 @@ public class ClientElement : MonoBehaviour
         _timeBar = GameController.Instance.TimeBar;
         _restaurantLife = GameController.Instance.RestaurantLife;
         eventSystem = GameController.Instance.EventSystem;
+        _store = GameController.Instance.Store;
         if (_slot == Slot.Slot1)
         {
             _slotInt = 0;

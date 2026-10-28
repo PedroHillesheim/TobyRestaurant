@@ -36,6 +36,8 @@ public class MealType : MonoBehaviour
     private Image _motivationTimeBar;
     private Image _desmotivationTimeBar;
     private bool _karenAtack = false;
+    [SerializeField] private float _timeOfCookingTimeDecreasing;
+    private TMP_Text _timeOfCookingBeingOnTextShop;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -51,6 +53,9 @@ public class MealType : MonoBehaviour
         _desmotivationTimeBar = GameController.Instance.DesmotivationTimeBar;
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
+        _timeOfCookingBeingOnTextShop = GameController.Instance.TimeOfCookingBeingOnTextShop;
+        float _timeOfOvenAfterUpdate = _timeOfCooking - _timeOfCookingTimeDecreasing;
+        _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate.ToString()}";
     }
     public void StartCooking(int type)
     {
@@ -205,5 +210,11 @@ public class MealType : MonoBehaviour
         _presentTimeDesmotivation = 0;
         _desmotivationTimeBar.fillAmount = 0;
         _karenAtack = false;
+    }
+    public void StoreUpgradeOvenTime()
+    {
+        _timeOfCooking =- _timeOfCookingTimeDecreasing;
+        float _timeOfOvenAfterUpdate = _timeOfCooking - _timeOfCookingTimeDecreasing;
+        _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate.ToString()}";
     }
 }

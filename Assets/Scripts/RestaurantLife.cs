@@ -1,6 +1,7 @@
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,7 +16,9 @@ public class SaveScore
 }
 public class RestaurantLife : MonoBehaviour
 {
+    private Day _day = Day.Day1;
     [SerializeField] private int _maxlife = 3;
+    [SerializeField] private UnityEvent _endOfDayEvent;
     private Image _backGroundColor;
     private OrderSystem _orderSystem;
     private int _currentLife;
@@ -27,6 +30,8 @@ public class RestaurantLife : MonoBehaviour
     private TMP_Text _bestTotalClientAtendedText;
     private int _clientsAtendedTotal;
     private int _nextChangeofColor = 20;
+    private int _endOfDay;
+    private int[] _endOfDaysValue;
 
     private void Start()
     {
@@ -37,6 +42,8 @@ public class RestaurantLife : MonoBehaviour
         _orderSystem = GameController.Instance.OrderSystem;
         _orderDoneText = GameController.Instance.OrderDonesText;
         _backGroundColor = GameController.Instance.BackGroundColor;
+        _endOfDay = GameController.Instance.EndOfDay;
+        _endOfDaysValue = GameController.Instance.EndOfDaysValue;
         _currentLife = _maxlife;
         _orderDoneText.text = _clientsAtendedTotal.ToString();
         _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
@@ -65,6 +72,30 @@ public class RestaurantLife : MonoBehaviour
     }
     public void VerifyBestScore()
     {
+        if(_clientsAtendedTotal >= _endOfDay)
+        {
+            if(_day == Day.Day1)
+            {
+                _day = Day.Day2;
+                _endOfDay = _endOfDaysValue[1];
+            }
+            else if (_day == Day.Day2)
+            {
+                _day = Day.Day3;
+                _endOfDay = _endOfDaysValue[2];
+            }
+            else if (_day == Day.Day3)
+            {
+                _day = Day.Day4;
+                _endOfDay = _endOfDaysValue[3];
+            }
+            else
+            {
+                _day = Day.Day5;
+                _endOfDay = _endOfDaysValue[4];
+            }
+            _endOfDayEvent.Invoke();
+        }
         if (_clientsAtendedTotal >= _highestTotalClientsAtended)
         {
             _highestTotalClientsAtended = _clientsAtendedTotal;

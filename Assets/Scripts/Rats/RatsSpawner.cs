@@ -35,6 +35,10 @@ public class RatsSpawner : MonoBehaviour
         _afterFisrtSpecial = true;
         _switchSceneButton.SetActive(true);
     }
+    public void EndOFDay()
+    {
+
+    }
     private IEnumerator Ratspawner()
     {
         yield return new WaitUntil(() => _afterFisrtSpecial);

@@ -35,6 +35,10 @@ public class GameController : MonoBehaviour
     public GameObject[] Rats { get => _rats;}
     public RatsSpawner RatsSpawner { get => ratsSpawner;}
     public GameObject SwitchSceneButton { get => _switchSceneButton;}
+    public Store Store { get => store;}
+    public int EndOfDay { get => _endOfDay;}
+    public int[] EndOfDaysValue { get => _endOfDaysValue;}
+    public TMP_Text TimeOfCookingBeingOnTextShop { get => _timeOfCookingBeingOnTextShop;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -44,6 +48,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private RestaurantLife restaurantLife;
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private RatsSpawner ratsSpawner;
+    [SerializeField] private Store store;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
     [SerializeField] private GameObject _blur;
@@ -57,6 +62,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text _orderDonesText;
     [SerializeField] private TMP_Text _totalClientsAtendedText;
     [SerializeField] private TMP_Text _bestTotalClientsAtendedText;
+    [SerializeField] private TMP_Text _timeOfCookingBeingOnTextShop;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
@@ -74,6 +80,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioSource _bell;
     [Header("Float")]
     [SerializeField] private float _timeofBlur;
+    [SerializeField] private int _endOfDay;
+    [SerializeField] private int[] _endOfDaysValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

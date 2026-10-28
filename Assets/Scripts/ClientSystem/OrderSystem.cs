@@ -12,9 +12,18 @@ public enum ClientsType
     Karen,
     Monster
 }
+public enum Day
+{
+    Day1,
+    Day2,
+    Day3,
+    Day4,
+    Day5
+}
 public class OrderSystem : MonoBehaviour
 {
     private List<int> _avalableSlot = new List<int>();
+    private Day _day;
     private ClientsType _clientType;
     private RatsSpawner _spawner;
     [Header("Client")]
@@ -22,6 +31,7 @@ public class OrderSystem : MonoBehaviour
     private float _clientWaitingTime;
     private int _clientDamege;
     private int _clientQuantityOfOrder;
+    private int _clientQuantityOfOrderTotal;
     [Header("Normal Client")]
     [SerializeField] private Sprite _normalClientSprite;
     [SerializeField] private float _minimalNormalClientWaitingTime;
@@ -59,6 +69,9 @@ public class OrderSystem : MonoBehaviour
     private bool _firstTime = true;
     private bool _onFrenezy = false;
     private TMP_Text _alertText;
+    private int _endOfDay;
+    private int[] _endOfDaysValue;
+    private bool _dayEnded = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,6 +79,7 @@ public class OrderSystem : MonoBehaviour
         _alertText = GameController.Instance.AlertText;
         eventSystem = GameController.Instance.EventSystem;
         _spawner = GameController.Instance.RatsSpawner;
+        _endOfDay = GameController.Instance.EndOfDay;
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
@@ -97,6 +111,40 @@ public class OrderSystem : MonoBehaviour
         {
             _avalableSlot.Add(4);
         }
+    }
+    public void GetClientAtendedQuantity(int value)
+    {
+        _clientQuantityOfOrderTotal = value;
+    }
+    public void BetweenDays()
+    {
+        Time.timeScale = 0;
+    }
+    public void NextDay()
+    {
+        Time.timeScale = 1;
+        if (_day == Day.Day1)
+        {
+            _day = Day.Day2;
+            _endOfDay = _endOfDaysValue[1];
+        }
+        else if (_day == Day.Day2)
+        {
+            _day = Day.Day3;
+            _endOfDay = _endOfDaysValue[2];
+        }
+        else if (_day == Day.Day3)
+        {
+            _day = Day.Day4;
+            _endOfDay = _endOfDaysValue[3];
+        }
+        else
+        {
+            _day = Day.Day5;
+            _endOfDay = _endOfDaysValue[4];
+        }
+        _firstTime = true;
+        _clientQuantityOfOrderTotal = 0;
     }
     private IEnumerator ClientsComing()
     {
@@ -152,8 +200,13 @@ public class OrderSystem : MonoBehaviour
                 }
                 if (_firstTime == true)
                 {
-                    eventSystem.StartChanceOfEvent();
-                    _spawner.StartRatspawner();
+                    
+                    if (_day == Day.Day1) { }
+                    else
+                    {   
+                        eventSystem.StartChanceOfEvent();
+                        _spawner.StartRatspawner();
+                    }                 
                     _firstTime = false;
                 }
             }
@@ -205,10 +258,16 @@ public class OrderSystem : MonoBehaviour
             }
             yield return new WaitForSeconds(_arrivalInterval);
             yield return new WaitUntil(() => _avalableSlot.Count > 0);
+            yield return new WaitUntil(() => _dayEnded = false);
             int randomIndex = Random.Range(0, _avalableSlot.Count);
             int randomSlot = _avalableSlot[randomIndex];
             _avalableSlot.RemoveAt(randomIndex);
             int randomMeal = Random.Range(1, 3);
+            float _clientplusone = _clientQuantityOfOrderTotal = +1;
+            if (_clientplusone == _endOfDay)
+            {
+                _dayEnded = true;
+            }
             switch (randomSlot)
             {
                 case 1:
