@@ -20,6 +20,7 @@ public class Store : MonoBehaviour
     }
     public void StartTimeWhenClosingStore()
     {
+        print("Vamos Ver se é store");
         Time.timeScale = 1.0f;
     }
     public void BuyLessCookingTime()
@@ -28,6 +29,7 @@ public class Store : MonoBehaviour
         {
             _money -= _buyLessCookingTimePrize;
             _moneyText.text = _money.ToString();
+            Time.timeScale = 0f;
             _mealType.StoreUpgradeOvenTime();
             _buyLessCookingTimePrize += 50f;
         }

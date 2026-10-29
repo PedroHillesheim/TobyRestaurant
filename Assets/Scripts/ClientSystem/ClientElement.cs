@@ -97,13 +97,12 @@ public class ClientElement : MonoBehaviour
     }
     public void ResetScene()
     {
-        print(_isSlotAvalable + " " + _slot);
         StopAllCoroutines();
         _typeOfMeals = TypeOfMealAvailable.None;
         _clientType = ClientsType.None;
         _clientUI.color = Color.white;
         _isSlotAvalable = true;
-        _orderSystem.ClientAtended(_slot);
+        _orderSystem.AddSlotAsAvailable(_slot);
         _isWaitinPacience = false;
         _clientWaitingTime = 0;
         _presentTime = 0;
@@ -208,6 +207,7 @@ public class ClientElement : MonoBehaviour
                 else if (_clientType == ClientsType.Karen)
                 {
                     _restaurantLife.TakeDamege(_damege);
+                    _clientType = ClientsType.None;
                     StartCoroutine(KarenBeingKaren());
                     _isWaitinPacience = false;
                 }

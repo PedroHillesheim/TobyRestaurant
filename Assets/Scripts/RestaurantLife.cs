@@ -75,7 +75,7 @@ public class RestaurantLife : MonoBehaviour
     }
     public void VerifyBestScore()
     {
-        if(_clientsAtendedTotal >= _endOfDay)
+        if(_clientsAtendedTotal >= _endOfDay && _day != Day.Day5)
         {
             if(_day == Day.Day1)
             {
@@ -95,13 +95,9 @@ public class RestaurantLife : MonoBehaviour
             else
             {
                 _day = Day.Day5;
-                _endOfDay = _endOfDaysValue[4];
+                _endOfDay = 999999999;
             }
             _clientsAtendedTotal = 0;
-            for (int i = 0; i < _clientElement.Length; i++)
-            {
-                _clientElement[i].ResetScene();
-            }
             _orderDoneText.text = _clientsAtendedTotal.ToString();
             _endOfDayEvent.Invoke();
         }
@@ -154,6 +150,7 @@ public class RestaurantLife : MonoBehaviour
     }
     public void ResetScene()
     {
+        print("reset do game over que vai ser alterado depois");
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
