@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public enum ClientsType
 {
+    None,
     NormalClients,
     Critic,
     Influencer,
@@ -71,7 +72,6 @@ public class OrderSystem : MonoBehaviour
     private TMP_Text _alertText;
     private int _endOfDay;
     private int[] _endOfDaysValue;
-    private bool _dayEnded = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -126,25 +126,29 @@ public class OrderSystem : MonoBehaviour
         if (_day == Day.Day1)
         {
             _day = Day.Day2;
-            _endOfDay = _endOfDaysValue[1];
         }
         else if (_day == Day.Day2)
         {
             _day = Day.Day3;
-            _endOfDay = _endOfDaysValue[2];
         }
         else if (_day == Day.Day3)
         {
             _day = Day.Day4;
-            _endOfDay = _endOfDaysValue[3];
         }
         else
         {
             _day = Day.Day5;
-            _endOfDay = _endOfDaysValue[4];
         }
         _firstTime = true;
+        _clientsAtended = 0;
         _clientQuantityOfOrderTotal = 0;
+        for (int i = 1; i <= 4; i++)
+        {
+            print(_avalableSlot.ToString());
+            _avalableSlot.Remove(i);
+        }
+        StopAllCoroutines();
+        StartCoroutine(ClientsComing());
     }
     private IEnumerator ClientsComing()
     {
@@ -200,7 +204,6 @@ public class OrderSystem : MonoBehaviour
                 }
                 if (_firstTime == true)
                 {
-                    
                     if (_day == Day.Day1) { }
                     else
                     {   
@@ -215,59 +218,57 @@ public class OrderSystem : MonoBehaviour
                 int ramdomCase = Random.Range(0, 5);
                 switch (ramdomCase)
                 {
-                case 0:
-                    _clientSprite = _normalClientSprite;
-                    float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
-                    _clientWaitingTime = randomWaitingTime;
-                    _clientDamege = _normalClientDamege;
-                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
-                    _clientType = ClientsType.NormalClients;
-                    break;
-                case 1:
-                    _clientSprite = _karenSprite;
-                    _clientWaitingTime = _karenWaitingTime;
-                    _clientDamege = _karenDamege;
-                    _clientQuantityOfOrder = _karenQuantityOfOrder;
-                    _clientType = ClientsType.Karen;
-                    break;
-                case 2:
-                    _clientSprite = _normalClientSprite;
-                    float randomWaitingTime2 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
-                    _clientWaitingTime = randomWaitingTime2;
-                    _clientDamege = _normalClientDamege;
-                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
-                    _clientType = ClientsType.NormalClients;
-                    break;
-                case 3:
-                    _clientSprite = _normalClientSprite;
-                    float randomWaitingTime3 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
-                    _clientWaitingTime = randomWaitingTime3;
-                    _clientDamege = _normalClientDamege;
-                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
-                    _clientType = ClientsType.NormalClients;
-                    break;
-                case 4:
-                    _clientSprite = _normalClientSprite;
-                    float randomWaitingTime4 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
-                    _clientWaitingTime = randomWaitingTime4;
-                    _clientDamege = _normalClientDamege;
-                    _clientQuantityOfOrder = _normalClientQuantityOfOrder;
-                    _clientType = ClientsType.NormalClients;
-                    break;
+                    case 0:
+                        _clientSprite = _normalClientSprite;
+                        float randomWaitingTime = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                        _clientWaitingTime = randomWaitingTime;
+                        _clientDamege = _normalClientDamege;
+                        _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                        _clientType = ClientsType.NormalClients;
+                        break;
+                    case 1:
+                        _clientSprite = _karenSprite;
+                        _clientWaitingTime = _karenWaitingTime;
+                        _clientDamege = _karenDamege;
+                        _clientQuantityOfOrder = _karenQuantityOfOrder;
+                        _clientType = ClientsType.Karen;
+                        break;
+                    case 2:
+                        _clientSprite = _normalClientSprite;
+                        float randomWaitingTime2 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                        _clientWaitingTime = randomWaitingTime2;
+                        _clientDamege = _normalClientDamege;
+                        _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                        _clientType = ClientsType.NormalClients;
+                        break;
+                    case 3:
+                        _clientSprite = _normalClientSprite;
+                        float randomWaitingTime3 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                        _clientWaitingTime = randomWaitingTime3;
+                        _clientDamege = _normalClientDamege;
+                        _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                        _clientType = ClientsType.NormalClients;
+                        break;
+                    case 4:
+                        _clientSprite = _normalClientSprite;
+                        float randomWaitingTime4 = Random.Range(_minimalNormalClientWaitingTime, _maxNormalClientWaitingTime);
+                        _clientWaitingTime = randomWaitingTime4;
+                        _clientDamege = _normalClientDamege;
+                        _clientQuantityOfOrder = _normalClientQuantityOfOrder;
+                        _clientType = ClientsType.NormalClients;
+                        break;
                 } 
             }
             yield return new WaitForSeconds(_arrivalInterval);
+            print("Antes da verificaçao da listga");
             yield return new WaitUntil(() => _avalableSlot.Count > 0);
-            yield return new WaitUntil(() => _dayEnded = false);
+            print("Antes do dito cujo");
+            //yield return new WaitUntil(() => _dayEnded = false);
+            print("Depois do dito cujo");
             int randomIndex = Random.Range(0, _avalableSlot.Count);
             int randomSlot = _avalableSlot[randomIndex];
             _avalableSlot.RemoveAt(randomIndex);
             int randomMeal = Random.Range(1, 3);
-            float _clientplusone = _clientQuantityOfOrderTotal = +1;
-            if (_clientplusone == _endOfDay)
-            {
-                _dayEnded = true;
-            }
             switch (randomSlot)
             {
                 case 1:

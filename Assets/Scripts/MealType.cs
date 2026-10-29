@@ -2,6 +2,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public enum TypeOfMealAvailable
@@ -38,6 +39,7 @@ public class MealType : MonoBehaviour
     private bool _karenAtack = false;
     [SerializeField] private float _timeOfCookingTimeDecreasing;
     private TMP_Text _timeOfCookingBeingOnTextShop;
+    [SerializeField] private UnityEvent _disableButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -57,7 +59,15 @@ public class MealType : MonoBehaviour
         float _timeOfOvenAfterUpdate = _timeOfCooking - _timeOfCookingTimeDecreasing;
         _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate.ToString()}";
     }
-    public void StartCooking(int type)
+    public void ResetScene()
+    {
+        _karenAtack = false;
+        _timeBarMeals[0].fillAmount = 0;
+        _appetizerReady = 0;
+        _dessertReady = 0;
+        _timeBarMeals[1].fillAmount = 0;
+    }
+public void StartCooking(int type)
     {
         StartCoroutine(CookingMeal((TypeOfMealAvailable)type));
     }
@@ -213,8 +223,13 @@ public class MealType : MonoBehaviour
     }
     public void StoreUpgradeOvenTime()
     {
-        _timeOfCooking =- _timeOfCookingTimeDecreasing;
         float _timeOfOvenAfterUpdate = _timeOfCooking - _timeOfCookingTimeDecreasing;
-        _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate.ToString()}";
+        _timeOfCooking = _timeOfOvenAfterUpdate;
+        float _timeOfOvenAfterUpdate2 = _timeOfCooking - _timeOfCookingTimeDecreasing;
+        _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate2.ToString()}";
+        if (_timeOfOvenAfterUpdate2 <= 1.0f)
+        {
+            _disableButton.Invoke();
+        }
     }
 }

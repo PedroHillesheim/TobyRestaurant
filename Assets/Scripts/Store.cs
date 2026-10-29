@@ -1,13 +1,18 @@
+using TMPro;
 using UnityEngine;
 
 public class Store : MonoBehaviour
 {
     private MealType _mealType;
+    private TMP_Text _moneyText;
     private float _money;
+    [SerializeField] private float _buyLessCookingTimePrize;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _mealType = GameController.Instance.MealTypo;
+        _moneyText = GameController.Instance.MoneyText;
+        _moneyText.text = _money.ToString();
     }
     public void StopTimeWhenOpenStore()
     {
@@ -19,11 +24,17 @@ public class Store : MonoBehaviour
     }
     public void BuyLessCookingTime()
     {
-        //if
-        _mealType.StoreUpgradeOvenTime();
+        if (_money >= _buyLessCookingTimePrize)
+        {
+            _money -= _buyLessCookingTimePrize;
+            _moneyText.text = _money.ToString();
+            _mealType.StoreUpgradeOvenTime();
+            _buyLessCookingTimePrize += 50f;
+        }
     }
-    public void UpdateMoney(float moneyQuantity)
+    public void UpdateMoney(float _moneyQuantity)
     {
-        _money = moneyQuantity;
+        _money += _moneyQuantity;
+        _moneyText.text = _money.ToString();
     }
 }

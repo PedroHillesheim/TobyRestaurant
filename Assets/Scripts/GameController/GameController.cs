@@ -39,6 +39,9 @@ public class GameController : MonoBehaviour
     public int EndOfDay { get => _endOfDay;}
     public int[] EndOfDaysValue { get => _endOfDaysValue;}
     public TMP_Text TimeOfCookingBeingOnTextShop { get => _timeOfCookingBeingOnTextShop;}
+    public float AppetizerPrize { get => _appetizerPrize;}
+    public float DessertPrize { get => _dessertPrize;}
+    public TMP_Text MoneyText { get => _moneyText;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -63,6 +66,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text _totalClientsAtendedText;
     [SerializeField] private TMP_Text _bestTotalClientsAtendedText;
     [SerializeField] private TMP_Text _timeOfCookingBeingOnTextShop;
+    [SerializeField] private TMP_Text _moneyText;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
@@ -80,6 +84,9 @@ public class GameController : MonoBehaviour
     [SerializeField] private AudioSource _bell;
     [Header("Float")]
     [SerializeField] private float _timeofBlur;
+    [SerializeField] private float _appetizerPrize;
+    [SerializeField] private float _dessertPrize;
+    [Header("Int")]
     [SerializeField] private int _endOfDay;
     [SerializeField] private int[] _endOfDaysValue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

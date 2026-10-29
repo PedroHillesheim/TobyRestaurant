@@ -1,5 +1,6 @@
 using System.IO;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class RestaurantLife : MonoBehaviour
     private Day _day = Day.Day1;
     [SerializeField] private int _maxlife = 3;
     [SerializeField] private UnityEvent _endOfDayEvent;
+    private ClientElement[] _clientElement;
     private Image _backGroundColor;
     private OrderSystem _orderSystem;
     private int _currentLife;
@@ -44,6 +46,7 @@ public class RestaurantLife : MonoBehaviour
         _backGroundColor = GameController.Instance.BackGroundColor;
         _endOfDay = GameController.Instance.EndOfDay;
         _endOfDaysValue = GameController.Instance.EndOfDaysValue;
+        _clientElement = GameController.Instance.ClientsElements;
         _currentLife = _maxlife;
         _orderDoneText.text = _clientsAtendedTotal.ToString();
         _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
@@ -94,6 +97,12 @@ public class RestaurantLife : MonoBehaviour
                 _day = Day.Day5;
                 _endOfDay = _endOfDaysValue[4];
             }
+            _clientsAtendedTotal = 0;
+            for (int i = 0; i < _clientElement.Length; i++)
+            {
+                _clientElement[i].ResetScene();
+            }
+            _orderDoneText.text = _clientsAtendedTotal.ToString();
             _endOfDayEvent.Invoke();
         }
         if (_clientsAtendedTotal >= _highestTotalClientsAtended)
