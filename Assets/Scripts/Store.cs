@@ -20,7 +20,6 @@ public class Store : MonoBehaviour
     }
     public void StartTimeWhenClosingStore()
     {
-        print("Vamos Ver se é store");
         Time.timeScale = 1.0f;
     }
     public void BuyLessCookingTime()

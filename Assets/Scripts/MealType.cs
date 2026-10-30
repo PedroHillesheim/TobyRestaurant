@@ -66,6 +66,8 @@ public class MealType : MonoBehaviour
         _appetizerReady = 0;
         _dessertReady = 0;
         _timeBarMeals[1].fillAmount = 0;
+        _appetizerButton.interactable = true;
+        _dessertButton.interactable = true;
         _appetizerText.text = _appetizerReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
         _dessertText.text = _dessertReady.ToString() + "/" + _maxOfReadyMadeMeals.ToString();
     }

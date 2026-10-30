@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RatsSpawner : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class RatsSpawner : MonoBehaviour
     [SerializeField] private float _ratspawnIntervalMin;
     [SerializeField] private float _ratspawnIntervalMax;
     [SerializeField] private AudioSource _ratsound;
+    [SerializeField] private UnityEvent _ActivateThatButtonThatDecideToNot;
     private bool _afterFisrtSpecial = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
