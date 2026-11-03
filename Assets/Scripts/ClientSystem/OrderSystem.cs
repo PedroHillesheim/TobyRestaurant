@@ -77,6 +77,11 @@ public class OrderSystem : MonoBehaviour
     private bool _day1Critic;
     private bool _day3Karen = true;
     private int _clientChoice;
+    private GameObject _dialogueObject;
+    private TMP_Text _dialogueText;
+    private string[] _dialogueString;
+    private bool _isreception1Available;
+    private bool _isreception2Available;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -86,6 +91,9 @@ public class OrderSystem : MonoBehaviour
         _spawner = GameController.Instance.RatsSpawner;
         _endOfDay = GameController.Instance.EndOfDay;
         _clientElement = GameController.Instance.ClientsElements;
+        _dialogueObject = GameController.Instance.DialogueVisual;
+        _dialogueText = GameController.Instance.DialogueText;
+        _dialogueString = GameController.Instance.DialogueString;
         for (int i = 1; i <= 4; i++)
         {
             _avalableSlot.Add(i);
@@ -390,6 +398,9 @@ public class OrderSystem : MonoBehaviour
         yield return new WaitForSeconds(_arrivalInterval);
         int randomIndex = Random.Range(0, _avalableSlot.Count);
         int randomSlot = _avalableSlot[randomIndex];
+        int randomReception = Random.Range(0, 2);
+        Reception reception = (Reception)randomReception;
+        //Slot slot = (Slot)randomSlot; 
         _avalableSlot.RemoveAt(randomIndex);
         int randomMeal = Random.Range(1, 3);
         if(_day1Critic == true)
@@ -400,66 +411,21 @@ public class OrderSystem : MonoBehaviour
         {
             _day3Karen = false;
             //Time.timeScale = 0f;
-        }
-        switch (randomSlot)
+            //_dialogueObject.SetActive(true);
+            //_dialogueText.text = _dialogueString[0];
+        }      
+        if (_clientType == ClientsType.Critic)
         {
-            case 1:
-                if (_clientType == ClientsType.Critic)
-                {
                     //_alertText.text = "The critic arrived";
-                    StartCoroutine(Disapear());
-                }
-                else if (_clientType == ClientsType.Influencer)
-                {
-                    //_alertText.text = "An influencer arrived";
-                    StartCoroutine(Disapear());
-                }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot1, _clientDamege,
-                (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType);
-                break;
-            case 2:
-                if (_clientType == ClientsType.Critic)
-                {
-                    //_alertText.text = "The critic arrived";
-                    StartCoroutine(Disapear());
-                }
-                else if (_clientType == ClientsType.Influencer)
-                {
-                    //_alertText.text = "An influencer arrived";
-                    StartCoroutine(Disapear());
-                }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _clientDamege,
-                (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType);
-                break;
-            case 3:
-                if (_clientType == ClientsType.Critic)
-                {
-                    //_alertText.text = "The critic arrived";
-                    StartCoroutine(Disapear());
-                }
-                else if (_clientType == ClientsType.Influencer)
-                {
-                    //_alertText.text = "An influencer arrived";
-                    StartCoroutine(Disapear());
-                }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot3, _clientDamege,
-                (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType);
-                break;
-            case 4:
-                if (_clientType == ClientsType.Critic)
-                {
-                    //_alertText.text = "The critic arrived";
-                    StartCoroutine(Disapear());
-                }
-                else if (_clientType == ClientsType.Influencer)
-                {
-                    //_alertText.text = "An influencer arrived";
-                    StartCoroutine(Disapear());
-                }
-                clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot4, _clientDamege,
-                (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType);
-                break;
+                    //StartCoroutine(Disapear());
         }
+        else if (_clientType == ClientsType.Influencer)
+        {
+                    //_alertText.text = "An influencer arrived";
+                    //StartCoroutine(Disapear());
+        }
+        clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _clientDamege,
+        (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType, reception);
         StartCoroutine(ClientsComing());
     }
     private IEnumerator Disapear()

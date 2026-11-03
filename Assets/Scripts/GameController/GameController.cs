@@ -42,6 +42,9 @@ public class GameController : MonoBehaviour
     public float AppetizerPrize { get => _appetizerPrize;}
     public float DessertPrize { get => _dessertPrize;}
     public TMP_Text MoneyText { get => _moneyText;}
+    public GameObject DialogueVisual { get => _dialogueVisual;}
+    public string[] DialogueString { get => _dialogueString;}
+    public TMP_Text DialogueText { get => _dialogueText;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -57,6 +60,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject _blur;
     [SerializeField] private GameObject[] _rats;
     [SerializeField] private GameObject _switchSceneButton;
+    [SerializeField] private GameObject _dialogueVisual;
     [Header("Text")]
     [SerializeField] private TMP_Text appetizerText;
     [SerializeField] private TMP_Text dessertText;
@@ -67,6 +71,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text _bestTotalClientsAtendedText;
     [SerializeField] private TMP_Text _timeOfCookingBeingOnTextShop;
     [SerializeField] private TMP_Text _moneyText;
+    [SerializeField] private TMP_Text _dialogueText;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
@@ -89,6 +94,8 @@ public class GameController : MonoBehaviour
     [Header("Int")]
     [SerializeField] private int _endOfDay;
     [SerializeField] private int[] _endOfDaysValue;
+    [Header("String")]
+    [SerializeField] private string[] _dialogueString;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Reception
+{
+    CheckIn1, 
+    CheckIn2
+}
 public class ClientElement : MonoBehaviour
 {
     [SerializeField] private Slot _slot;
@@ -110,6 +115,7 @@ public class ClientElement : MonoBehaviour
         _quantityOfOrder = 0;
         _orderDisplay[_slotInt].enabled = false;
         _timeBar[_slotInt].fillAmount = 0;
+        _clientSystem.VerifyIfSlotIsAvailable(_slot, false);
     }
     public void GetMealsValue(int appetizer, int dessert)
     {
@@ -153,6 +159,7 @@ public class ClientElement : MonoBehaviour
         _clientUI.color = Color.white;
         _isSlotAvalable = true;
         _orderSystem.ClientAtended(_slot);
+        _clientSystem.VerifyIfSlotIsAvailable(_slot, true);
         _quantityOfOrder = 0;
         _clientWaitingTime = 0;
         _timeBar[_slotInt].fillAmount = 0f;
