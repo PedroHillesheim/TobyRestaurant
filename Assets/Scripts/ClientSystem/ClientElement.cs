@@ -2,11 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Reception
-{
-    CheckIn1, 
-    CheckIn2
-}
 public class ClientElement : MonoBehaviour
 {
     [SerializeField] private Slot _slot;

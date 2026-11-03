@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Slot
 {
@@ -8,6 +9,11 @@ public enum Slot
     Slot2 = 2,
     Slot3 = 3,
     Slot4 = 4
+}
+public enum Reception
+{
+    CheckIn1 = 1,
+    CheckIn2 = 2
 }
 public class ClientType
 {
@@ -19,6 +25,7 @@ public class ClientType
 public class ClientSystem : MonoBehaviour
 {
     [SerializeField] OrderSystem _orderSystem;
+    private Reception _clientinReception;
     private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
     [SerializeField] private MealType _mealType;
@@ -28,24 +35,45 @@ public class ClientSystem : MonoBehaviour
     private TypeOfMealAvailable _typeOfMeal;
     private int _order;
     private ClientsType _clientsType;
-    private bool _isSlot1Available;
-    private bool _isSlot2Available;
-    private bool _isSlot3Available;
-    private bool _isSlot4Available;
-    //private Sprite _clientSprite;
-    public void NewClient(float clientWaitingTime, Slot slot, int damege,
+    private bool _isSlot1Available = true;
+    private bool _isSlot2Available = true;
+    private bool _isSlot3Available = true;
+    private bool _isSlot4Available = true;
+    private bool _isReception1Available = true;
+    private bool _isReception2Available = true;
+    private AudioSource _unavailableSound;
+    private Image _clientInReception1;
+    private Image _clientInReception2;
+    private Image[] _clientsImages;
+    void Awake()
+    {
+        //_clientSprite = null;
+        _client = GameController.Instance.ClientsElements;
+        _clientInReception1 = GameController.Instance.ClientInReception1;
+        _clientInReception2 = GameController.Instance.ClientInReception2;
+    }
+    public void NewClient(float clientWaitingTime, int damege,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType, Reception check)
     {
         _order = order;
         _clientsType = clientsType;
         _typeOfMeal = typeOfMeal;
         _clientWaitingTime = clientWaitingTime;
-        _slot = slot;
         _damege = damege;
-        for (int i = 0; i < _client.Length; i++)
+        if(check == Reception.CheckIn1)
         {
-            _client[i].GetValue(/*clientSprite,*/ clientWaitingTime, damege, slot, typeOfMeal, order, clientsType);
+            _isReception1Available = false;
+            _clientInReception1.color = Color.gold;
         }
+        else if (check == Reception.CheckIn2)
+        {
+            _isReception2Available = false;
+            _clientInReception2.color = Color.gold;
+        }
+    }
+    public void GetClientToChose(int receptionNumber)
+    {
+        _clientinReception = (Reception)receptionNumber;
     }
     public void GetoTable(int slotNumber)
     {
@@ -55,11 +83,11 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot1;
                 _isSlot1Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, _slot, _typeOfMeal, _order, _clientsType);
+                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
             }
             else
             {
-
+                throw new System.NotImplementedException("_slot 1 não disponivel");
             }
         }
         else if (slotNumber == 2)
@@ -68,11 +96,11 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot2;
                 _isSlot2Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, _slot, _typeOfMeal, _order, _clientsType);
+                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
             }
             else
             {
-
+                throw new System.NotImplementedException("_slot 2 não disponivel");
             }
         }
         else if (slotNumber == 3)
@@ -81,11 +109,11 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot3;
                 _isSlot3Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, _slot, _typeOfMeal, _order, _clientsType);
+                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
             }
             else
             {
-
+                throw new System.NotImplementedException("_slot 3 não disponivel");
             }
         }
         else
@@ -94,11 +122,11 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot4;
                 _isSlot4Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, _slot, _typeOfMeal, _order, _clientsType);
+                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
             }
             else
             {
-
+                throw new System.NotImplementedException("_slot 4 não disponivel");
             }
         }
     }
@@ -120,11 +148,5 @@ public class ClientSystem : MonoBehaviour
         {
             _isSlot4Available = VF;
         }
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        //_clientSprite = null;
-        _client = GameController.Instance.ClientsElements;
     }
 }

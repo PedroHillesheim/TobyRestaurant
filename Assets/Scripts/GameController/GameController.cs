@@ -45,6 +45,8 @@ public class GameController : MonoBehaviour
     public GameObject DialogueVisual { get => _dialogueVisual;}
     public string[] DialogueString { get => _dialogueString;}
     public TMP_Text DialogueText { get => _dialogueText;}
+    public Image ClientInReception1 { get => _clientInReception1;}
+    public Image ClientInReception2 { get => _clientInReception2;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -83,6 +85,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image _desmotivationTimeBar;
     [SerializeField] private Image _frenezyTimeBar;
     [SerializeField] private Image _backGroundColor;
+    [SerializeField] private Image _clientInReception1;
+    [SerializeField] private Image _clientInReception2;
     [Header("Sprite")]
     [SerializeField] private Sprite[] _mealSprite;
     [Header("Audio")]

@@ -80,8 +80,8 @@ public class OrderSystem : MonoBehaviour
     private GameObject _dialogueObject;
     private TMP_Text _dialogueText;
     private string[] _dialogueString;
-    private bool _isreception1Available;
-    private bool _isreception2Available;
+    private bool _isreception1Available = true;
+    private bool _isreception2Available = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -396,12 +396,37 @@ public class OrderSystem : MonoBehaviour
         yield return new WaitUntil(() => _avalableSlot.Count > 0);
         yield return new WaitUntil(() => _dayEnded = true);
         yield return new WaitForSeconds(_arrivalInterval);
-        int randomIndex = Random.Range(0, _avalableSlot.Count);
-        int randomSlot = _avalableSlot[randomIndex];
         int randomReception = Random.Range(0, 2);
         Reception reception = (Reception)randomReception;
+        if (_isreception1Available == false && _isreception2Available == false)
+        {
+            yield return new WaitUntil(() => _isreception1Available || _isreception2Available);
+            if (_isreception1Available)
+            {
+                reception = Reception.CheckIn1;
+            }
+            else
+            {
+                reception = Reception.CheckIn2;
+            }
+        }
+        else if (reception == Reception.CheckIn1 && _isreception1Available == true)
+        {
+            _isreception1Available = false;
+        }
+        else if (reception == Reception.CheckIn2 && _isreception2Available == true)
+        {
+            _isreception2Available = false;
+        }
+        else if (reception == Reception.CheckIn1 && _isreception1Available == false)
+        {
+            reception = Reception.CheckIn2;
+        }
+        else
+        {
+            reception = Reception.CheckIn1;
+        }
         //Slot slot = (Slot)randomSlot; 
-        _avalableSlot.RemoveAt(randomIndex);
         int randomMeal = Random.Range(1, 3);
         if(_day1Critic == true)
         {
@@ -416,15 +441,15 @@ public class OrderSystem : MonoBehaviour
         }      
         if (_clientType == ClientsType.Critic)
         {
-                    //_alertText.text = "The critic arrived";
-                    //StartCoroutine(Disapear());
+            //_alertText.text = "The critic arrived";
+            //StartCoroutine(Disapear());
         }
         else if (_clientType == ClientsType.Influencer)
         {
-                    //_alertText.text = "An influencer arrived";
-                    //StartCoroutine(Disapear());
+            //_alertText.text = "An influencer arrived";
+            //StartCoroutine(Disapear());
         }
-        clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, Slot.Slot2, _clientDamege,
+        clientSystem.NewClient(/*_clientSprite,*/ _clientWaitingTime, _clientDamege,
         (TypeOfMealAvailable)randomMeal, _clientQuantityOfOrder, _clientType, reception);
         StartCoroutine(ClientsComing());
     }
