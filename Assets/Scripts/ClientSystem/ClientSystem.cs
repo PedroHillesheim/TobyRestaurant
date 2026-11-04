@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,12 +46,40 @@ public class ClientSystem : MonoBehaviour
     private Image _clientInReception1;
     private Image _clientInReception2;
     private Image[] _clientsImages;
+    private Button[] _slotComands;
+    private Button[] _clientsWaiting;
     void Awake()
     {
         //_clientSprite = null;
         _client = GameController.Instance.ClientsElements;
+        _slotComands = GameController.Instance.SlotComands;
+        _clientsWaiting = GameController.Instance.ClientsWaiting;
+        _orderSystem = GameController.Instance.OrderSystem;
         _clientInReception1 = GameController.Instance.ClientInReception1;
         _clientInReception2 = GameController.Instance.ClientInReception2;
+        for (int i = 0; i < _slotComands.Length; i++)
+        {
+            _slotComands[i].interactable = false;
+        }
+        for (int i = 0; i < _clientsWaiting.Length; i++)
+        {
+            _clientsWaiting[i].interactable = false;
+        }
+    }
+    public void DayEnded()
+    {
+        _isReception1Available = true;
+        _isReception2Available = true;
+        _orderSystem.GetAvailableStateOfReception(Reception.CheckIn1, _isReception1Available);
+        _orderSystem.GetAvailableStateOfReception(Reception.CheckIn2, _isReception1Available);
+        _isSlot1Available = true;
+        _isSlot2Available = true;
+        _isSlot3Available = true;
+        _isSlot4Available = true;
+        _clientInReception1.color = Color.white;
+        _clientInReception2.color = Color.white;
+        _clientsWaiting[0].interactable = false;
+        _clientsWaiting[1].interactable = false;
     }
     public void NewClient(float clientWaitingTime, int damege,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType, Reception check)
@@ -64,16 +93,24 @@ public class ClientSystem : MonoBehaviour
         {
             _isReception1Available = false;
             _clientInReception1.color = Color.gold;
+            _clientsWaiting[0].interactable = true;
+            _orderSystem.GetAvailableStateOfReception(check, _isReception1Available);
         }
         else if (check == Reception.CheckIn2)
         {
             _isReception2Available = false;
             _clientInReception2.color = Color.gold;
+            _clientsWaiting[1].interactable = true;
+            _orderSystem.GetAvailableStateOfReception(check, _isReception2Available);
         }
     }
     public void GetClientToChose(int receptionNumber)
     {
         _clientinReception = (Reception)receptionNumber;
+        for (int i = 0; i < _slotComands.Length; i++)
+        {
+            _slotComands[i].interactable = true;
+        }
     }
     public void GetoTable(int slotNumber)
     {
@@ -122,11 +159,36 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot4;
                 _isSlot4Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
+                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber,
+                    _typeOfMeal, _order, _clientsType);
             }
             else
             {
                 throw new System.NotImplementedException("_slot 4 não disponivel");
+            }
+        }
+        if (_clientinReception == Reception.CheckIn1)
+        {
+            _isReception1Available = true;
+            _clientInReception1.color = Color.white;
+            _clientsWaiting[0].interactable = false;
+            _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception1Available);
+            for (int i = 0; i < _slotComands.Length; i++)
+            {
+                print("Pelo amorft fe dedui ds par te do pwdawcascascsac1 no cas dos  ");
+                _slotComands[i].interactable = false;
+            }
+        }
+        else if (_clientinReception == Reception.CheckIn2)
+        {
+            _isReception2Available = true;
+            _clientInReception2.color = Color.white;
+            _clientsWaiting[1].interactable = false;
+            _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception2Available);
+            for (int i = 0; i < _slotComands.Length; i++)
+            {
+                print("Pelo amorft fe dedui ds");
+                _slotComands[i].interactable = false;
             }
         }
     }

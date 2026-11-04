@@ -393,9 +393,6 @@ public class OrderSystem : MonoBehaviour
                 }
             }
         }
-        yield return new WaitUntil(() => _avalableSlot.Count > 0);
-        yield return new WaitUntil(() => _dayEnded = true);
-        yield return new WaitForSeconds(_arrivalInterval);
         int randomReception = Random.Range(0, 2);
         Reception reception = (Reception)randomReception;
         if (_isreception1Available == false && _isreception2Available == false)
@@ -426,6 +423,9 @@ public class OrderSystem : MonoBehaviour
         {
             reception = Reception.CheckIn1;
         }
+        yield return new WaitUntil(() => _avalableSlot.Count > 0);
+        yield return new WaitUntil(() => _dayEnded = true);
+        yield return new WaitForSeconds(_arrivalInterval);
         //Slot slot = (Slot)randomSlot; 
         int randomMeal = Random.Range(1, 3);
         if(_day1Critic == true)
@@ -458,6 +458,18 @@ public class OrderSystem : MonoBehaviour
         yield return new WaitForSeconds(2);
         //_alertText.text = string.Empty;
         StopCoroutine(Disapear());
+    }
+    public void GetAvailableStateOfReception(Reception reception,  bool state)
+    {
+        print("ehp");
+        if (reception  == Reception.CheckIn1)
+        {
+            _isreception1Available = state;
+        }
+        else if (reception == Reception.CheckIn2)
+        {
+            _isreception2Available = state;
+        }
     }
     public void GetoFrenezy(int _clientUntilSpecial)
     {

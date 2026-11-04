@@ -47,6 +47,8 @@ public class GameController : MonoBehaviour
     public TMP_Text DialogueText { get => _dialogueText;}
     public Image ClientInReception1 { get => _clientInReception1;}
     public Image ClientInReception2 { get => _clientInReception2;}
+    public Button[] SlotComands { get => _slotComands;}
+    public Button[] ClientsWaiting { get => _clientsWaiting;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -77,6 +79,8 @@ public class GameController : MonoBehaviour
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
+    [SerializeField] private Button[] _slotComands;
+    [SerializeField] private Button[] _clientsWaiting;
     [Header("Image")]
     [SerializeField] private Image[] _orderDisplay;
     [SerializeField] private Image[] _timeBarSlots;
