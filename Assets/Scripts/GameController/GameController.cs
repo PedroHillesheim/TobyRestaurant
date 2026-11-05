@@ -49,6 +49,8 @@ public class GameController : MonoBehaviour
     public Image ClientInReception2 { get => _clientInReception2;}
     public Button[] SlotComands { get => _slotComands;}
     public Button[] ClientsWaiting { get => _clientsWaiting;}
+    public TMP_Text PrizeForCookingtimeText { get => _prizeForCookingtimeText;}
+    public Image[] TimeBarPacience { get => _timeBarPacience;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -76,6 +78,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private TMP_Text _timeOfCookingBeingOnTextShop;
     [SerializeField] private TMP_Text _moneyText;
     [SerializeField] private TMP_Text _dialogueText;
+    [SerializeField] private TMP_Text _prizeForCookingtimeText;
     [Header("Button")]
     [SerializeField] private Button _appetizerButton;
     [SerializeField] private Button _dessertButton;
@@ -85,6 +88,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private Image[] _orderDisplay;
     [SerializeField] private Image[] _timeBarSlots;
     [SerializeField] private Image[] _timeBarMeals;
+    [SerializeField] private Image[] _timeBarPacience;
     [SerializeField] private Image _motivationTimeBar;
     [SerializeField] private Image _desmotivationTimeBar;
     [SerializeField] private Image _frenezyTimeBar;

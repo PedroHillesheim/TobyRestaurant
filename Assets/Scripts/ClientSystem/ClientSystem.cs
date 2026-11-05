@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
@@ -26,6 +27,7 @@ public class ClientType
 public class ClientSystem : MonoBehaviour
 {
     [SerializeField] OrderSystem _orderSystem;
+    private RestaurantLife _restaurantLife;
     private Reception _clientinReception;
     private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
@@ -48,6 +50,11 @@ public class ClientSystem : MonoBehaviour
     private Image[] _clientsImages;
     private Button[] _slotComands;
     private Button[] _clientsWaiting;
+    private Image[] _timeBarPacience;
+    private float _presentTimeClient1;
+    private float _presentTimeClient2;
+    private float _waitingClientTimeOld1;
+    private float _waitingClientTimeOld2;
     void Awake()
     {
         //_clientSprite = null;
@@ -57,6 +64,8 @@ public class ClientSystem : MonoBehaviour
         _orderSystem = GameController.Instance.OrderSystem;
         _clientInReception1 = GameController.Instance.ClientInReception1;
         _clientInReception2 = GameController.Instance.ClientInReception2;
+        _timeBarPacience = GameController.Instance.TimeBarPacience;
+        _restaurantLife = GameController.Instance.RestaurantLife;
         for (int i = 0; i < _slotComands.Length; i++)
         {
             _slotComands[i].interactable = false;
@@ -95,6 +104,7 @@ public class ClientSystem : MonoBehaviour
             _clientInReception1.color = Color.gold;
             _clientsWaiting[0].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception1Available);
+            StartCoroutine(Client1Pacience());
         }
         else if (check == Reception.CheckIn2)
         {
@@ -102,6 +112,47 @@ public class ClientSystem : MonoBehaviour
             _clientInReception2.color = Color.gold;
             _clientsWaiting[1].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception2Available);
+            StartCoroutine(Client2Pacience());
+        }
+    }
+    private IEnumerator Client1Pacience()
+    {
+        _waitingClientTimeOld1 = _clientWaitingTime;
+        if (_isReception1Available == false)
+        {
+            _timeBarPacience[0].fillAmount = 0;
+            _presentTimeClient1 = 0;
+            while (_presentTimeClient1 < _waitingClientTimeOld1)
+            {
+                _presentTimeClient1 += Time.deltaTime;
+
+                _timeBarPacience[0].fillAmount = _presentTimeClient1 / _waitingClientTimeOld1;
+
+                yield return null;
+            }
+            _presentTimeClient1 = _waitingClientTimeOld1;
+            _timeBarPacience[0].fillAmount = 1;
+            _restaurantLife.TakeDamege(_damege);
+        }
+    }
+    private IEnumerator Client2Pacience()
+    {
+        _waitingClientTimeOld2 = _clientWaitingTime;
+        if (_isReception2Available == false)
+        {
+            _timeBarPacience[1].fillAmount = 0;
+            _presentTimeClient2 = 0;
+            while (_presentTimeClient2 < _waitingClientTimeOld2)
+            {
+                _presentTimeClient2 += Time.deltaTime;
+
+                _timeBarPacience[1].fillAmount = _presentTimeClient2 / _waitingClientTimeOld2;
+
+                yield return null;
+            }
+            _presentTimeClient2 = _waitingClientTimeOld2;
+            _timeBarPacience[1].fillAmount = 1;
+            _restaurantLife.TakeDamege(_damege);
         }
     }
     public void GetClientToChose(int receptionNumber)
@@ -175,7 +226,6 @@ public class ClientSystem : MonoBehaviour
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception1Available);
             for (int i = 0; i < _slotComands.Length; i++)
             {
-                print("Pelo amorft fe dedui ds par te do pwdawcascascsac1 no cas dos  ");
                 _slotComands[i].interactable = false;
             }
         }
@@ -187,7 +237,6 @@ public class ClientSystem : MonoBehaviour
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception2Available);
             for (int i = 0; i < _slotComands.Length; i++)
             {
-                print("Pelo amorft fe dedui ds");
                 _slotComands[i].interactable = false;
             }
         }

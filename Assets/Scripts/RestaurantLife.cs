@@ -17,7 +17,7 @@ public class SaveScore
 public class RestaurantLife : MonoBehaviour
 {
     private Day _day = Day.Day1;
-    [SerializeField] private int _maxlife = 3;
+    [SerializeField] private int _maxlife = 5;
     [SerializeField] private UnityEvent _endOfDayEvent;
     private ClientElement[] _clientElement;
     private Image _backGroundColor;

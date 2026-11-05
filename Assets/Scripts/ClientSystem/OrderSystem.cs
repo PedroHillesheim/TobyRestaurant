@@ -461,7 +461,6 @@ public class OrderSystem : MonoBehaviour
     }
     public void GetAvailableStateOfReception(Reception reception,  bool state)
     {
-        print("ehp");
         if (reception  == Reception.CheckIn1)
         {
             _isreception1Available = state;
