@@ -55,9 +55,17 @@ public class ClientSystem : MonoBehaviour
     private float _presentTimeClient2;
     private float _waitingClientTimeOld1;
     private float _waitingClientTimeOld2;
+    [SerializeField] private Sprite _clientImagefromData;
+    private Color _alphaOne;
+    private Color _alphaZero;
     void Awake()
     {
         //_clientSprite = null;
+        _alphaZero.a = 0;
+        _alphaZero.b = 255;
+        _alphaZero.r = 255;
+        _alphaZero.g = 255;
+        _alphaOne.a = 1;
         _client = GameController.Instance.ClientsElements;
         _slotComands = GameController.Instance.SlotComands;
         _clientsWaiting = GameController.Instance.ClientsWaiting;
@@ -66,6 +74,8 @@ public class ClientSystem : MonoBehaviour
         _clientInReception2 = GameController.Instance.ClientInReception2;
         _timeBarPacience = GameController.Instance.TimeBarPacience;
         _restaurantLife = GameController.Instance.RestaurantLife;
+        _clientInReception1.color = _alphaZero; 
+        _clientInReception2.color = _alphaZero;
         for (int i = 0; i < _slotComands.Length; i++)
         {
             _slotComands[i].interactable = false;
@@ -101,7 +111,8 @@ public class ClientSystem : MonoBehaviour
         if(check == Reception.CheckIn1)
         {
             _isReception1Available = false;
-            _clientInReception1.color = Color.gold;
+            _clientInReception1.sprite = _clientImagefromData;
+            _clientInReception1.color = _alphaOne;
             _clientsWaiting[0].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception1Available);
             StartCoroutine(Client1Pacience());
@@ -109,7 +120,8 @@ public class ClientSystem : MonoBehaviour
         else if (check == Reception.CheckIn2)
         {
             _isReception2Available = false;
-            _clientInReception2.color = Color.gold;
+            _clientInReception2.sprite = _clientImagefromData;
+            _clientInReception2.color = _alphaOne;
             _clientsWaiting[1].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception2Available);
             StartCoroutine(Client2Pacience());
@@ -221,7 +233,8 @@ public class ClientSystem : MonoBehaviour
         if (_clientinReception == Reception.CheckIn1)
         {
             _isReception1Available = true;
-            _clientInReception1.color = Color.white;
+            _clientInReception1.sprite = null;
+            _clientInReception1.color = _alphaZero;
             _clientsWaiting[0].interactable = false;
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception1Available);
             for (int i = 0; i < _slotComands.Length; i++)
@@ -232,7 +245,8 @@ public class ClientSystem : MonoBehaviour
         else if (_clientinReception == Reception.CheckIn2)
         {
             _isReception2Available = true;
-            _clientInReception2.color = Color.white;
+            _clientInReception2.sprite = null;
+            _clientInReception2.color = _alphaZero;
             _clientsWaiting[1].interactable = false;
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception2Available);
             for (int i = 0; i < _slotComands.Length; i++)
