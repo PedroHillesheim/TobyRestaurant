@@ -23,7 +23,6 @@ public enum Day
 }
 public class OrderSystem : MonoBehaviour
 {
-    private List<int> _avalableSlot = new List<int>();
     private Day _day;
     private ClientsType _clientType;
     private RatsSpawner _spawner;
@@ -80,8 +79,8 @@ public class OrderSystem : MonoBehaviour
     private GameObject _dialogueObject;
     private TMP_Text _dialogueText;
     private string[] _dialogueString;
-    private bool _isreception1Available = true;
-    private bool _isreception2Available = true;
+    private bool _isreception1Available = false;
+    private bool _isreception2Available = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -94,56 +93,11 @@ public class OrderSystem : MonoBehaviour
         _dialogueObject = GameController.Instance.DialogueVisual;
         _dialogueText = GameController.Instance.DialogueText;
         _dialogueString = GameController.Instance.DialogueString;
-        for (int i = 1; i <= 4; i++)
-        {
-            _avalableSlot.Add(i);
-        }
         StartCoroutine(ClientsComing());
     }
     public void ClientAtended(Slot slot)
     {
         _clientsAtended++;
-        StartCoroutine(ReleaseSlotAfterDelay(slot));
-    }
-    private IEnumerator ReleaseSlotAfterDelay(Slot slot)
-    {
-        yield return new WaitForSeconds(2f);
-
-        if (slot == Slot.Slot1)
-        {
-            _avalableSlot.Add(1);
-        }
-        else if (slot == Slot.Slot2)
-        {
-            _avalableSlot.Add(2);
-        }
-        else if (slot == Slot.Slot3)
-        {
-            _avalableSlot.Add(3);
-        }
-        else if (slot == Slot.Slot4)
-        {
-            _avalableSlot.Add(4);
-        }
-    }
-    public void AddSlotAsAvailable(Slot slot)
-    {
-        if (slot == Slot.Slot1)
-        {
-            _avalableSlot.Add(1);
-        }
-        else if (slot == Slot.Slot2)
-        {
-            _avalableSlot.Add(2);
-        }
-        else if (slot == Slot.Slot3)
-        {
-            _avalableSlot.Add(3);
-        }
-        else if (slot == Slot.Slot4)
-        {
-            _avalableSlot.Add(4);
-        }
     }
     public void GetClientAtendedQuantity(int value)
     {
@@ -175,10 +129,6 @@ public class OrderSystem : MonoBehaviour
         _firstTime = true;
         _clientsAtended = 0;
         _clientQuantityOfOrderTotal = 0;
-        for (int i = 1; i <= 4; i++)
-        {
-            _avalableSlot.Remove(i);
-        }
         for (int i = 0; i < _clientElement.Length; i++)
         {
             _clientElement[i].ResetScene();
@@ -393,38 +343,40 @@ public class OrderSystem : MonoBehaviour
                 }
             }
         }
-        int randomReception = Random.Range(0, 2);
+        print("vamos ver antes do reception");
+        int randomReception = Random.Range(1, 3);
         Reception reception = (Reception)randomReception;
-        if (_isreception1Available == false && _isreception2Available == false)
+        if (_isreception1Available == true && _isreception2Available == true)
         {
-            yield return new WaitUntil(() => _isreception1Available || _isreception2Available);
-            if (_isreception1Available)
+            print("Dentro dos dois true");
+            yield return new WaitUntil(() => _isreception1Available == false || _isreception2Available == false);
+            if (_isreception1Available == false)
             {
                 reception = Reception.CheckIn1;
             }
-            else
+            else if (_isreception2Available == false)
             {
                 reception = Reception.CheckIn2;
             }
         }
-        else if (reception == Reception.CheckIn1 && _isreception1Available == true)
-        {
-            _isreception1Available = false;
-        }
-        else if (reception == Reception.CheckIn2 && _isreception2Available == true)
-        {
-            _isreception2Available = false;
-        }
         else if (reception == Reception.CheckIn1 && _isreception1Available == false)
-        {
-            reception = Reception.CheckIn2;
-        }
-        else
         {
             reception = Reception.CheckIn1;
         }
-        yield return new WaitUntil(() => _avalableSlot.Count > 0);
+        else if (reception == Reception.CheckIn2 && _isreception2Available == false)
+        {
+            reception = Reception.CheckIn2;
+        }
+        else if (reception == Reception.CheckIn2 && _isreception1Available == false)
+        {
+            reception = Reception.CheckIn1;
+        }
+        else if (reception == Reception.CheckIn1 && _isreception2Available == false)
+        {
+            reception = Reception.CheckIn2;
+        }
         yield return new WaitUntil(() => _dayEnded = true);
+        print("Antes do waitr");
         yield return new WaitForSeconds(_arrivalInterval);
         //Slot slot = (Slot)randomSlot; 
         int randomMeal = Random.Range(1, 3);
@@ -464,10 +416,12 @@ public class OrderSystem : MonoBehaviour
         if (reception  == Reception.CheckIn1)
         {
             _isreception1Available = state;
+            print(_isreception1Available.ToString() + " " + state.ToString());
         }
         else if (reception == Reception.CheckIn2)
         {
             _isreception2Available = state;
+            print(_isreception2Available.ToString() + " " + state.ToString());
         }
     }
     public void GetoFrenezy(int _clientUntilSpecial)

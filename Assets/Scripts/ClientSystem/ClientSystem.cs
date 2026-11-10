@@ -58,6 +58,8 @@ public class ClientSystem : MonoBehaviour
     [SerializeField] private Sprite _clientImagefromData;
     private Color _alphaOne;
     private Color _alphaZero;
+    private bool _client1Waiting;
+    private bool _client2Waiting;
     void Awake()
     {
         //_clientSprite = null;
@@ -66,6 +68,9 @@ public class ClientSystem : MonoBehaviour
         _alphaZero.r = 255;
         _alphaZero.g = 255;
         _alphaOne.a = 1;
+        _alphaOne.b = 255;
+        _alphaOne.r = 255;
+        _alphaOne.g = 255;
         _client = GameController.Instance.ClientsElements;
         _slotComands = GameController.Instance.SlotComands;
         _clientsWaiting = GameController.Instance.ClientsWaiting;
@@ -87,6 +92,7 @@ public class ClientSystem : MonoBehaviour
     }
     public void DayEnded()
     {
+        print("Vamos ver o dia sem referencia funcionar");
         _isReception1Available = true;
         _isReception2Available = true;
         _orderSystem.GetAvailableStateOfReception(Reception.CheckIn1, _isReception1Available);
@@ -115,7 +121,6 @@ public class ClientSystem : MonoBehaviour
             _clientInReception1.color = _alphaOne;
             _clientsWaiting[0].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception1Available);
-            StartCoroutine(Client1Pacience());
         }
         else if (check == Reception.CheckIn2)
         {
@@ -124,47 +129,59 @@ public class ClientSystem : MonoBehaviour
             _clientInReception2.color = _alphaOne;
             _clientsWaiting[1].interactable = true;
             _orderSystem.GetAvailableStateOfReception(check, _isReception2Available);
-            StartCoroutine(Client2Pacience());
         }
     }
-    private IEnumerator Client1Pacience()
+    private void Update()
     {
-        _waitingClientTimeOld1 = _clientWaitingTime;
         if (_isReception1Available == false)
         {
-            _timeBarPacience[0].fillAmount = 0;
-            _presentTimeClient1 = 0;
-            while (_presentTimeClient1 < _waitingClientTimeOld1)
+            if (!_client1Waiting)
             {
-                _presentTimeClient1 += Time.deltaTime;
-
-                _timeBarPacience[0].fillAmount = _presentTimeClient1 / _waitingClientTimeOld1;
-
-                yield return null;
+                _client1Waiting = true;
+                _waitingClientTimeOld1 = _clientWaitingTime;
+                _presentTimeClient1 = 0;
+                _timeBarPacience[0].fillAmount = 0;
             }
-            _presentTimeClient1 = _waitingClientTimeOld1;
-            _timeBarPacience[0].fillAmount = 1;
-            _restaurantLife.TakeDamege(_damege);
+            _presentTimeClient1 += Time.deltaTime;
+            _timeBarPacience[0].fillAmount = _presentTimeClient1 / _waitingClientTimeOld1;
+            if (_presentTimeClient1 >= _waitingClientTimeOld1)
+            {
+                _presentTimeClient1 = _waitingClientTimeOld1;
+                _timeBarPacience[0].fillAmount = 1;
+                _restaurantLife.TakeDamege(_damege);
+                _client1Waiting = false;
+            }
         }
-    }
-    private IEnumerator Client2Pacience()
-    {
-        _waitingClientTimeOld2 = _clientWaitingTime;
+        else
+        {
+            _client1Waiting = false;
+            _presentTimeClient1 = 0;
+            _timeBarPacience[0].fillAmount = 0;
+        }
         if (_isReception2Available == false)
         {
-            _timeBarPacience[1].fillAmount = 0;
-            _presentTimeClient2 = 0;
-            while (_presentTimeClient2 < _waitingClientTimeOld2)
+            if (!_client2Waiting)
             {
-                _presentTimeClient2 += Time.deltaTime;
-
-                _timeBarPacience[1].fillAmount = _presentTimeClient2 / _waitingClientTimeOld2;
-
-                yield return null;
+                _client2Waiting = true;
+                _waitingClientTimeOld2 = _clientWaitingTime;
+                _presentTimeClient2 = 0;
+                _timeBarPacience[1].fillAmount = 0;
             }
-            _presentTimeClient2 = _waitingClientTimeOld2;
-            _timeBarPacience[1].fillAmount = 1;
-            _restaurantLife.TakeDamege(_damege);
+            _presentTimeClient2 += Time.deltaTime;
+            _timeBarPacience[1].fillAmount = _presentTimeClient2 / _waitingClientTimeOld2;
+            if (_presentTimeClient2 >= _waitingClientTimeOld2)
+            {
+                _presentTimeClient2 = _waitingClientTimeOld2;
+                _timeBarPacience[1].fillAmount = 1;
+                _restaurantLife.TakeDamege(_damege);
+                _client2Waiting = false;
+            }
+        }
+        else
+        {
+            _client2Waiting = false;
+            _presentTimeClient2 = 0;
+            _timeBarPacience[1].fillAmount = 0;
         }
     }
     public void GetClientToChose(int receptionNumber)
@@ -237,6 +254,8 @@ public class ClientSystem : MonoBehaviour
             _clientInReception1.color = _alphaZero;
             _clientsWaiting[0].interactable = false;
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception1Available);
+            _timeBarPacience[0].fillAmount = 0;
+            _presentTimeClient1 = 0;
             for (int i = 0; i < _slotComands.Length; i++)
             {
                 _slotComands[i].interactable = false;
@@ -249,6 +268,8 @@ public class ClientSystem : MonoBehaviour
             _clientInReception2.color = _alphaZero;
             _clientsWaiting[1].interactable = false;
             _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception2Available);
+            _timeBarPacience[1].fillAmount = 0;
+            _presentTimeClient2 = 0;
             for (int i = 0; i < _slotComands.Length; i++)
             {
                 _slotComands[i].interactable = false;

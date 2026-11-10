@@ -102,7 +102,6 @@ public class ClientElement : MonoBehaviour
         _clientType = ClientsType.None;
         _clientUI.color = Color.white;
         _isSlotAvalable = true;
-        _orderSystem.AddSlotAsAvailable(_slot);
         _isWaitinPacience = false;
         _clientWaitingTime = 0;
         _presentTime = 0;
