@@ -51,6 +51,7 @@ public class RestaurantLife : MonoBehaviour
         _lifeText.text = _currentLife.ToString() + "/" + _maxlife.ToString();
         LoadHighestScore();
         _losePainel.SetActive(false);
+        _endOfDay = _endOfDaysValue[0];
     }
     public void ClientAtended()
     {

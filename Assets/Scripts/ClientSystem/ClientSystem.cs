@@ -27,16 +27,22 @@ public class ClientType
 public class ClientSystem : MonoBehaviour
 {
     [SerializeField] OrderSystem _orderSystem;
+    private ClientsType _clientTypeReception1;
+    private ClientsType _clientTypeReception2;
     private RestaurantLife _restaurantLife;
     private Reception _clientinReception;
     private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
     [SerializeField] private MealType _mealType;
-    private float _clientWaitingTime;
+    private float _clientWaitingTime1;
+    private float _clientWaitingTime2;
     private Slot _slot;
-    private int _damege;
-    private TypeOfMealAvailable _typeOfMeal;
-    private int _order;
+    private int _damege1;
+    private int _damege2;
+    private TypeOfMealAvailable _typeOfMeal1;
+    private TypeOfMealAvailable _typeOfMeal2;
+    private int _order1;
+    private int _order2;
     private ClientsType _clientsType;
     private bool _isSlot1Available = true;
     private bool _isSlot2Available = true;
@@ -60,6 +66,7 @@ public class ClientSystem : MonoBehaviour
     private Color _alphaZero;
     private bool _client1Waiting;
     private bool _client2Waiting;
+    private int _currentClient;
     void Awake()
     {
         //_clientSprite = null;
@@ -101,21 +108,23 @@ public class ClientSystem : MonoBehaviour
         _isSlot2Available = true;
         _isSlot3Available = true;
         _isSlot4Available = true;
-        _clientInReception1.color = Color.white;
-        _clientInReception2.color = Color.white;
+        _clientInReception1.color = _alphaZero;
+        _clientInReception2.color = _alphaZero;
         _clientsWaiting[0].interactable = false;
         _clientsWaiting[1].interactable = false;
     }
     public void NewClient(float clientWaitingTime, int damege,
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType, Reception check)
     {
-        _order = order;
         _clientsType = clientsType;
-        _typeOfMeal = typeOfMeal;
-        _clientWaitingTime = clientWaitingTime;
-        _damege = damege;
+        
         if(check == Reception.CheckIn1)
         {
+            _typeOfMeal1 = typeOfMeal;
+            _clientTypeReception1 = clientsType;
+            _clientWaitingTime1 = clientWaitingTime;
+            _damege1 = damege;
+            _order1 = order;
             _isReception1Available = false;
             _clientInReception1.sprite = _clientImagefromData;
             _clientInReception1.color = _alphaOne;
@@ -124,6 +133,11 @@ public class ClientSystem : MonoBehaviour
         }
         else if (check == Reception.CheckIn2)
         {
+            _typeOfMeal2 = typeOfMeal;
+            _clientWaitingTime2 = clientWaitingTime;
+            _damege2 = damege;
+            _order2 = order;
+            _clientTypeReception2 = clientsType;
             _isReception2Available = false;
             _clientInReception2.sprite = _clientImagefromData;
             _clientInReception2.color = _alphaOne;
@@ -138,19 +152,26 @@ public class ClientSystem : MonoBehaviour
             if (!_client1Waiting)
             {
                 _client1Waiting = true;
-                _waitingClientTimeOld1 = _clientWaitingTime;
+                _waitingClientTimeOld1 = _clientWaitingTime1;
                 _presentTimeClient1 = 0;
                 _timeBarPacience[0].fillAmount = 0;
             }
             _presentTimeClient1 += Time.deltaTime;
             _timeBarPacience[0].fillAmount = _presentTimeClient1 / _waitingClientTimeOld1;
-            if (_presentTimeClient1 >= _waitingClientTimeOld1)
+            if (_clientTypeReception1 == ClientsType.Monster)
+            {   
+
+                _timeBarPacience[0].fillAmount = 0f;
+                _presentTimeClient1 = 0;
+            }
+            else if (_presentTimeClient1 >= _waitingClientTimeOld1)
             {
                 _presentTimeClient1 = _waitingClientTimeOld1;
                 _timeBarPacience[0].fillAmount = 1;
-                _restaurantLife.TakeDamege(_damege);
+                _restaurantLife.TakeDamege(_damege1);
                 _client1Waiting = false;
             }
+
         }
         else
         {
@@ -163,7 +184,7 @@ public class ClientSystem : MonoBehaviour
             if (!_client2Waiting)
             {
                 _client2Waiting = true;
-                _waitingClientTimeOld2 = _clientWaitingTime;
+                _waitingClientTimeOld2 = _clientWaitingTime2;
                 _presentTimeClient2 = 0;
                 _timeBarPacience[1].fillAmount = 0;
             }
@@ -173,7 +194,7 @@ public class ClientSystem : MonoBehaviour
             {
                 _presentTimeClient2 = _waitingClientTimeOld2;
                 _timeBarPacience[1].fillAmount = 1;
-                _restaurantLife.TakeDamege(_damege);
+                _restaurantLife.TakeDamege(_damege2);
                 _client2Waiting = false;
             }
         }
@@ -194,13 +215,22 @@ public class ClientSystem : MonoBehaviour
     }
     public void GetoTable(int slotNumber)
     {
-        if(slotNumber == 1)
+        if (slotNumber == 1)
         {
             if( _isSlot1Available == true)
             {
                 _slot = Slot.Slot1;
                 _isSlot1Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
+                if(_clientinReception == Reception.CheckIn1)
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime1, _damege1,(Slot)slotNumber, _typeOfMeal1,
+                        _order1, _clientTypeReception1);
+                }
+                else
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime2, _damege2, (Slot)slotNumber, _typeOfMeal2,
+                        _order2, _clientTypeReception2);
+                }
             }
             else
             {
@@ -213,7 +243,16 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot2;
                 _isSlot2Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
+                if (_clientinReception == Reception.CheckIn1)
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime1, _damege1, (Slot)slotNumber, _typeOfMeal1,
+                        _order1, _clientTypeReception1);
+                }
+                else
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime2, _damege2, (Slot)slotNumber, _typeOfMeal2,
+                        _order2, _clientTypeReception2);
+                }
             }
             else
             {
@@ -226,7 +265,16 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot3;
                 _isSlot3Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber, _typeOfMeal, _order, _clientsType);
+                if (_clientinReception == Reception.CheckIn1)
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime1, _damege1, (Slot)slotNumber, _typeOfMeal1,
+                        _order1, _clientTypeReception1);
+                }
+                else
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime2, _damege2, (Slot)slotNumber, _typeOfMeal2,
+                        _order2, _clientTypeReception2);
+                }
             }
             else
             {
@@ -239,8 +287,16 @@ public class ClientSystem : MonoBehaviour
             {
                 _slot = Slot.Slot4;
                 _isSlot4Available = false;
-                _client[slotNumber - 1].GetValue(_clientWaitingTime, _damege, (Slot)slotNumber,
-                    _typeOfMeal, _order, _clientsType);
+                if (_clientinReception == Reception.CheckIn1)
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime1, _damege1, (Slot)slotNumber, _typeOfMeal1,
+                        _order1, _clientTypeReception1);
+                }
+                else
+                {
+                    _client[slotNumber - 1].GetValue(_clientWaitingTime2, _damege2, (Slot)slotNumber, _typeOfMeal2,
+                        _order2, _clientTypeReception2);
+                }
             }
             else
             {

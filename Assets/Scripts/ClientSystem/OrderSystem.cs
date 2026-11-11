@@ -79,8 +79,8 @@ public class OrderSystem : MonoBehaviour
     private GameObject _dialogueObject;
     private TMP_Text _dialogueText;
     private string[] _dialogueString;
-    private bool _isreception1Available = false;
-    private bool _isreception2Available = false;
+    private bool _isreception1Available = true;
+    private bool _isreception2Available = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -189,11 +189,6 @@ public class OrderSystem : MonoBehaviour
                         _clientQuantityOfOrder = _criticQuantityOfOrder;
                         _clientType = ClientsType.Critic;
                         _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
                         break;
                     case 2:
                         _clientSprite = _influencerSprite;
@@ -207,11 +202,6 @@ public class OrderSystem : MonoBehaviour
                         _clientQuantityOfOrder = _influencerQuantityOfOrder;
                         _clientType = ClientsType.Influencer;
                         _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
                         break;
                 }
             }
@@ -227,11 +217,6 @@ public class OrderSystem : MonoBehaviour
                         _clientQuantityOfOrder = _criticQuantityOfOrder;
                         _clientType = ClientsType.Critic;
                         _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
                         break;
                     case 2:
                         _clientSprite = _influencerSprite;
@@ -245,11 +230,6 @@ public class OrderSystem : MonoBehaviour
                         _clientQuantityOfOrder = _influencerQuantityOfOrder;
                         _clientType = ClientsType.Influencer;
                         _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
                         break;
                     case 3:
                         _clientSprite = _monsterSprite;
@@ -258,11 +238,6 @@ public class OrderSystem : MonoBehaviour
                         _clientQuantityOfOrder = _monsterQuantityOfOrder;
                         _clientType = ClientsType.Monster;
                         _clientsAtended = 0;
-                        if (_onFrenezy == false)
-                        {
-                            int _randomClientAtended = Random.Range(6, 15);
-                            _clientAttendedUntilSpecial = _randomClientAtended;
-                        }
                         break;
                 }
                 if (_firstTime == true)
@@ -346,32 +321,32 @@ public class OrderSystem : MonoBehaviour
         print("vamos ver antes do reception");
         int randomReception = Random.Range(1, 3);
         Reception reception = (Reception)randomReception;
-        if (_isreception1Available == true && _isreception2Available == true)
+        if (_isreception1Available == false && _isreception2Available == false)
         {
             print("Dentro dos dois true");
-            yield return new WaitUntil(() => _isreception1Available == false || _isreception2Available == false);
-            if (_isreception1Available == false)
+            yield return new WaitUntil(() => _isreception1Available == true || _isreception2Available == true);
+            if (_isreception1Available == true)
             {
                 reception = Reception.CheckIn1;
             }
-            else if (_isreception2Available == false)
+            else if (_isreception2Available == true)
             {
                 reception = Reception.CheckIn2;
             }
         }
-        else if (reception == Reception.CheckIn1 && _isreception1Available == false)
+        else if (reception == Reception.CheckIn1 && _isreception1Available == true)
         {
             reception = Reception.CheckIn1;
         }
-        else if (reception == Reception.CheckIn2 && _isreception2Available == false)
+        else if (reception == Reception.CheckIn2 && _isreception2Available == true)
         {
             reception = Reception.CheckIn2;
         }
-        else if (reception == Reception.CheckIn2 && _isreception1Available == false)
+        else if (reception == Reception.CheckIn2 && _isreception1Available == true)
         {
             reception = Reception.CheckIn1;
         }
-        else if (reception == Reception.CheckIn1 && _isreception2Available == false)
+        else if (reception == Reception.CheckIn1 && _isreception2Available == true)
         {
             reception = Reception.CheckIn2;
         }
@@ -434,6 +409,17 @@ public class OrderSystem : MonoBehaviour
         else
         {
              _onFrenezy = false;
+        }
+    }
+    public void UpgradeClientPacience(float value)
+    {
+        if (_arrivalInterval >= 6)
+        {
+
+        }
+        else 
+        {
+            _arrivalInterval += value;
         }
     }
 }

@@ -260,4 +260,9 @@ public class ClientElement : MonoBehaviour
         }
         _isWaitinPacience = true;
     }
+    public void Inflation()
+    {
+        _appetizerPrize += 35f;
+        _dessertPrize += 20f;
+    }
 }

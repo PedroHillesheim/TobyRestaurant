@@ -231,7 +231,7 @@ public void StartCooking(int type)
         _timeOfCooking = _timeOfOvenAfterUpdate;
         float _timeOfOvenAfterUpdate2 = _timeOfCooking - _timeOfCookingTimeDecreasing;
         _timeOfCookingBeingOnTextShop.text = $"{_timeOfCooking.ToString()} = {_timeOfOvenAfterUpdate2.ToString()}";
-        if (_timeOfOvenAfterUpdate2 <= 1.0f)
+        if (_timeOfOvenAfterUpdate2 <= 3.0f)
         {
             _disableButton.Invoke();
         }
