@@ -28,6 +28,7 @@ public class ClientSystem : MonoBehaviour
     private ClientsType _clientTypeReception2;
     private RestaurantLife _restaurantLife;
     private Reception _clientinReception;
+    private AudioSource _bellRing;
     private ClientElement[] _client;
     [SerializeField] ClientType _clientType;
     [SerializeField] private MealType _mealType;
@@ -75,6 +76,7 @@ public class ClientSystem : MonoBehaviour
         _alphaOne.b = 255;
         _alphaOne.r = 255;
         _alphaOne.g = 255;
+        _bellRing = GameController.Instance.Bell;
         _client = GameController.Instance.ClientsElements;
         _slotComands = GameController.Instance.SlotComands;
         _clientsWaiting = GameController.Instance.ClientsWaiting;
@@ -114,8 +116,8 @@ public class ClientSystem : MonoBehaviour
     TypeOfMealAvailable typeOfMeal, int order, ClientsType clientsType, Reception check)
     {
         _clientsType = clientsType;
-        
-        if(check == Reception.CheckIn1)
+        _bellRing.Play();
+        if (check == Reception.CheckIn1)
         {
             _typeOfMeal1 = typeOfMeal;
             _clientTypeReception1 = clientsType;

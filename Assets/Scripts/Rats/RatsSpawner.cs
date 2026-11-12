@@ -59,6 +59,7 @@ public class RatsSpawner : MonoBehaviour
         _rats[_randomRats].SetActive(true);
         _ratsCode[_randomRats].RatAppered();
         _ratsNotinScene.Remove(_randomRats);
+        _ratsound.Play();
         if (_ratsNotinScene.Count <= 0)
         {
             _restaurantLife.TakeDamege(3);

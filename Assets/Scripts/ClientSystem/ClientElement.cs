@@ -25,21 +25,21 @@ public class ClientElement : MonoBehaviour
     private Sprite[] _mealSprite;
     private Image[] _timeBar;
     private float _presentTime;
-    private AudioSource _bellRing;
     private bool _isWaitinPacience;
     private float _appetizerPrize;
     private float _dessertPrize;
     private float _money;
     private Store _store;
+    private AudioSource _bellRing;
     private void Start()
     {
         _clientUI = GetComponent<Image>();
+        _bellRing = GameController.Instance.Bell;
         _type = GameController.Instance.MealTypo;
         _orderSystem = GameController.Instance.OrderSystem;
         _clientSystem = GameController.Instance.ClientSystem;
         _orderDisplay = GameController.Instance.OrderDisplay;
         _mealSprite = GameController.Instance.MealSprite;
-        _bellRing = GameController.Instance.Bell;
         _timeBar = GameController.Instance.TimeBar;
         _restaurantLife = GameController.Instance.RestaurantLife;
         eventSystem = GameController.Instance.EventSystem;
@@ -69,7 +69,6 @@ public class ClientElement : MonoBehaviour
     {
         if(slot != _slot)
             return;
-        _bellRing.Play();
         _orderDisplay[_slotInt].enabled = true;
         _typeOfMeals = typeOfMeal;
         _clientType = clientsType;
