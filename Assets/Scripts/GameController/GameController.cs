@@ -51,6 +51,7 @@ public class GameController : MonoBehaviour
     public Button[] ClientsWaiting { get => _clientsWaiting;}
     public TMP_Text PrizeForCookingtimeText { get => _prizeForCookingtimeText;}
     public Image[] TimeBarPacience { get => _timeBarPacience;}
+    public Rats[] RatsCode { get => _ratsCode;}
 
     [Header("Scripts")]
     [SerializeField] private OrderSystem orderSystem;
@@ -61,6 +62,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
     [SerializeField] private RatsSpawner ratsSpawner;
     [SerializeField] private Store store;
+    [SerializeField] private Rats[] _ratsCode;
     [Header("GameObject")]
     [SerializeField] private GameObject _losePainel;
     [SerializeField] private GameObject _blur;

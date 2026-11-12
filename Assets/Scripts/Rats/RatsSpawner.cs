@@ -7,6 +7,7 @@ public class RatsSpawner : MonoBehaviour
 {
     private List<int> _ratsNotinScene = new List<int>();
     private GameObject[] _rats;
+    private Rats[] _ratsCode;
     private RestaurantLife _restaurantLife;
     private GameObject _switchSceneButton;
     [SerializeField] private float _ratspawnIntervalMin;
@@ -20,6 +21,7 @@ public class RatsSpawner : MonoBehaviour
         _rats = GameController.Instance.Rats;
         _restaurantLife = GameController.Instance.RestaurantLife;
         _switchSceneButton = GameController.Instance.SwitchSceneButton;
+        _ratsCode = GameController.Instance.RatsCode;
         for (int i = 0; i <= 4; i++)
         {
             _ratsNotinScene.Add(i);
@@ -39,7 +41,7 @@ public class RatsSpawner : MonoBehaviour
     }
     public void EndOFDay()
     {
-
+        _ActivateThatButtonThatDecideToNot.Invoke();
     }
     private IEnumerator Ratspawner()
     {
@@ -55,6 +57,7 @@ public class RatsSpawner : MonoBehaviour
         yield return new WaitForSeconds(_randomRatspawnInterval);
         print("Ratoooooooooo!");
         _rats[_randomRats].SetActive(true);
+        _ratsCode[_randomRats].RatAppered();
         _ratsNotinScene.Remove(_randomRats);
         if (_ratsNotinScene.Count <= 0)
         {

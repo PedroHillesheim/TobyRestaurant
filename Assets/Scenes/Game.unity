@@ -1734,10 +1734,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1872997702}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 2106392251}
+        m_TargetAssemblyTypeName: RatsSpawner, Assembly-CSharp
+        m_MethodName: EndOFDay
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5645,6 +5645,12 @@ MonoBehaviour:
   eventSystem: {fileID: 279853003}
   ratsSpawner: {fileID: 2106392251}
   store: {fileID: 1480154219}
+  _ratsCode:
+  - {fileID: 1317073665}
+  - {fileID: 220945139}
+  - {fileID: 1602351570}
+  - {fileID: 224792468}
+  - {fileID: 2087186938}
   _losePainel: {fileID: 2068390455}
   _blur: {fileID: 436826985}
   _rats:
@@ -8603,6 +8609,7 @@ MonoBehaviour:
   eventSystem: {fileID: 0}
   ratsSpawner: {fileID: 0}
   store: {fileID: 0}
+  _ratsCode: []
   _losePainel: {fileID: 1081695743}
   _blur: {fileID: 0}
   _rats: []
@@ -8725,7 +8732,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClientSystem
   _orderSystem: {fileID: 279853001}
   _mealType: {fileID: 1743304286}
-  _clientImagefromData: {fileID: -1325955939273644015, guid: c49f0f9fb93f4764980b4fa02e75e0ad, type: 3}
+  _clientImagefromData:
+  - {fileID: -1325955939273644015, guid: c49f0f9fb93f4764980b4fa02e75e0ad, type: 3}
+  - {fileID: -5999790813155687516, guid: 3f1f12e6b3ba1ae4ab374a321e2b9223, type: 3}
+  - {fileID: -6346216357205161634, guid: 805368741bdbc45499dd84efac87af2e, type: 3}
+  - {fileID: 7790203097515640350, guid: 9f1e89dd5e985d84fb72f2cb1ee63a03, type: 3}
+  - {fileID: 2339941579755529119, guid: 3d9a2a162a18a1f4fb4ace6263669ac0, type: 3}
 --- !u!1 &1602351566
 GameObject:
   m_ObjectHideFlags: 0
@@ -9495,7 +9507,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClientSystem
   _orderSystem: {fileID: 279853001}
   _mealType: {fileID: 1800745838}
-  _clientImagefromData: {fileID: 0}
+  _clientImagefromData: []
 --- !u!224 &1713306054
 RectTransform:
   m_ObjectHideFlags: 0

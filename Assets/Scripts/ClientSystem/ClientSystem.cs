@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -61,7 +58,7 @@ public class ClientSystem : MonoBehaviour
     private float _presentTimeClient2;
     private float _waitingClientTimeOld1;
     private float _waitingClientTimeOld2;
-    [SerializeField] private Sprite _clientImagefromData;
+    [SerializeField] private Sprite[] _clientImagefromData;
     private Color _alphaOne;
     private Color _alphaZero;
     private bool _client1Waiting;
@@ -126,9 +123,28 @@ public class ClientSystem : MonoBehaviour
             _damege1 = damege;
             _order1 = order;
             _isReception1Available = false;
-            _clientInReception1.sprite = _clientImagefromData;
             _clientInReception1.color = _alphaOne;
             _clientsWaiting[0].interactable = true;
+            if(clientsType == ClientsType.NormalClients)
+            {
+                _clientInReception1.sprite = _clientImagefromData[0];
+            }
+            else if (clientsType == ClientsType.Critic)
+            {
+                _clientInReception1.sprite = _clientImagefromData[1];
+            }
+            else if (clientsType == ClientsType.Influencer)
+            {
+                _clientInReception1.sprite = _clientImagefromData[2];
+            }
+            else if (clientsType == ClientsType.Karen)
+            {
+                _clientInReception1.sprite = _clientImagefromData[3];
+            }
+            else if (clientsType == ClientsType.Monster)
+            {
+                _clientInReception1.sprite = _clientImagefromData[4];
+            }
             _orderSystem.GetAvailableStateOfReception(check, _isReception1Available);
         }
         else if (check == Reception.CheckIn2)
@@ -139,9 +155,28 @@ public class ClientSystem : MonoBehaviour
             _order2 = order;
             _clientTypeReception2 = clientsType;
             _isReception2Available = false;
-            _clientInReception2.sprite = _clientImagefromData;
             _clientInReception2.color = _alphaOne;
             _clientsWaiting[1].interactable = true;
+            if (clientsType == ClientsType.NormalClients)
+            {
+                _clientInReception2.sprite = _clientImagefromData[0];
+            }
+            else if (clientsType == ClientsType.Critic)
+            {
+                _clientInReception2.sprite = _clientImagefromData[1];
+            }
+            else if (clientsType == ClientsType.Influencer)
+            {
+                _clientInReception2.sprite = _clientImagefromData[2];
+            }
+            else if (clientsType == ClientsType.Karen)
+            {
+                _clientInReception2.sprite = _clientImagefromData[3];
+            }
+            else if (clientsType == ClientsType.Monster)
+            {
+                _clientInReception2.sprite = _clientImagefromData[4];
+            }
             _orderSystem.GetAvailableStateOfReception(check, _isReception2Available);
         }
     }
@@ -159,8 +194,8 @@ public class ClientSystem : MonoBehaviour
             _presentTimeClient1 += Time.deltaTime;
             _timeBarPacience[0].fillAmount = _presentTimeClient1 / _waitingClientTimeOld1;
             if (_clientTypeReception1 == ClientsType.Monster)
-            {   
-
+            {
+                _restaurantLife.TakeDamege(_damege1);
                 _timeBarPacience[0].fillAmount = 0f;
                 _presentTimeClient1 = 0;
             }
@@ -190,7 +225,13 @@ public class ClientSystem : MonoBehaviour
             }
             _presentTimeClient2 += Time.deltaTime;
             _timeBarPacience[1].fillAmount = _presentTimeClient2 / _waitingClientTimeOld2;
-            if (_presentTimeClient2 >= _waitingClientTimeOld2)
+            if (_clientTypeReception1 == ClientsType.Monster)
+            {
+                _restaurantLife.TakeDamege(_damege2);
+                _timeBarPacience[1].fillAmount = 0f;
+                _presentTimeClient2 = 0;
+            }
+            else if (_presentTimeClient2 >= _waitingClientTimeOld2)
             {
                 _presentTimeClient2 = _waitingClientTimeOld2;
                 _timeBarPacience[1].fillAmount = 1;
@@ -208,9 +249,33 @@ public class ClientSystem : MonoBehaviour
     public void GetClientToChose(int receptionNumber)
     {
         _clientinReception = (Reception)receptionNumber;
-        for (int i = 0; i < _slotComands.Length; i++)
+        if(_clientinReception == Reception.CheckIn1 && _clientTypeReception1 == ClientsType.Monster)
         {
-            _slotComands[i].interactable = true;
+            _restaurantLife.TakeDamege(_damege1);
+            _isReception1Available = true;
+            _clientInReception1.color = _alphaZero;
+            _clientsWaiting[0].interactable = false;
+            _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception1Available);
+            _timeBarPacience[0].fillAmount = 0;
+            _presentTimeClient1 = 0;
+        }
+        else if (_clientinReception == Reception.CheckIn2 && _clientTypeReception2 == ClientsType.Monster)
+        {
+            _restaurantLife.TakeDamege(_damege2);
+            _isReception2Available = true;
+            _clientInReception2.sprite = null;
+            _clientInReception2.color = _alphaZero;
+            _clientsWaiting[1].interactable = false;
+            _orderSystem.GetAvailableStateOfReception(_clientinReception, _isReception2Available);
+            _timeBarPacience[1].fillAmount = 0;
+            _presentTimeClient2 = 0;
+        }
+        else
+        {
+            for (int i = 0; i < _slotComands.Length; i++)
+            {
+                _slotComands[i].interactable = true;
+            }
         }
     }
     public void GetoTable(int slotNumber)

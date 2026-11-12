@@ -204,6 +204,7 @@ public class ClientElement : MonoBehaviour
                     _timeBar[_slotInt].fillAmount = 0f;
                     _presentTime = _clientWaitingTime;
                     _damege = 0;
+                    _clientSystem.VerifyIfSlotIsAvailable(_slot, true);
                 }  
                 else if (_clientType == ClientsType.Karen)
                 {
@@ -211,6 +212,7 @@ public class ClientElement : MonoBehaviour
                     _clientType = ClientsType.None;
                     StartCoroutine(KarenBeingKaren());
                     _isWaitinPacience = false;
+                    _clientSystem.VerifyIfSlotIsAvailable(_slot, true);
                 }
                 else if (_clientType == ClientsType.None)
                 {

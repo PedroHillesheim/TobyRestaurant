@@ -6,6 +6,7 @@ public class Store : MonoBehaviour
 {
     private MealType _mealType;
     private OrderSystem _orderSystem;
+    private ClientElement[] _clientElement;
     private TMP_Text _moneyText;
     private float _money;
     private int _quantityOfTimeOfBuyingInflation;
@@ -32,6 +33,10 @@ public class Store : MonoBehaviour
         _moneyText.text = _money.ToString() + "$";
         _prizeForClientPacienceText.text = _buyClientPaciencePrize.ToString() + "$";
         _prizeForInflationText.text = _buyInflatingPrize.ToString() + "$";
+        for (int i = 0; i <= 3; i++)
+        {
+            _clientElement = GameController.Instance.ClientsElements;
+        }
     }
     public void StopTimeWhenOpenStore()
     {
@@ -76,17 +81,21 @@ public class Store : MonoBehaviour
     }
     public void MoreMoneyForAtending()
     {
-        if (_quantityOfTimeOfBuyingInflation >= 3)
-        {
-            NoMoreInflation();
-        }
-        else if(_money >= _buyInflatingPrize)
+        if(_money >= _buyInflatingPrize)
         {
             _money -= _buyInflatingPrize;
             _moneyText.text = _money.ToString();
             _buyInflatingPrize += 50;
             _prizeForInflationText.text = _buyInflatingPrize.ToString() + "$";
             _quantityOfTimeOfBuyingInflation++;
+            for (int i = 0; i <= 3; i++)
+            {
+                _clientElement[i].Inflation();
+            }
+            if (_quantityOfTimeOfBuyingInflation >= 3)
+            {
+                NoMoreInflation();
+            }
         }
     }
     public void NoMoreInflation()
